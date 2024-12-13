@@ -22,9 +22,11 @@ public class Controller{
             @Override
             public void keyPressed(KeyEvent e){
                 if(e.getKeyChar()=='a'){
-                    model.moveToleft();
+                    model.moveToLeft();
+                    System.out.println("Hi");
                 }else if(e.getKeyChar()=='d'){
-                    model.moveToright();
+                    model.moveToRight();
+                    System.out.println("Hello");
                 }
             }
             public void keyReleased(KeyEvent e){
