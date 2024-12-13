@@ -16,8 +16,8 @@ public class Model {
     private boolean isGameOver;
     private int playerPosX;
 
-    ArrayList<Integer> arrPosX;
-    ArrayList<Integer> arrPosY;
+    ArrayList<Integer> arrRockPosX;
+    ArrayList<Integer> arrRockPosY;
     public Model() {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
@@ -25,8 +25,8 @@ public class Model {
         isGameStarted = true;
         isGameOver = false;
 
-        arrPosX = new ArrayList<Integer>();
-        arrPosY = new ArrayList<Integer>();
+        arrRockPosX = new ArrayList<Integer>();
+        arrRockPosY = new ArrayList<Integer>();
 
 
         timer = new Timer(1000, new ActionListener(){
@@ -57,17 +57,17 @@ public class Model {
     }
 
     public ArrayList<Integer> getRockPosY() {
-        return arrPosY;
+        return arrRockPosY;
     }
 
     //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
     public void increaseRockPosY() {
-        for (int i=0; i<arrPosY.size(); i++) {
-            arrPosY.set(i, arrPosX.get(i) + 1);
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
         }
     }
 
-    public int getPosition() {
+    public int getPlayerPosX() {
         return playerPosX;
     }
 
@@ -76,15 +76,15 @@ public class Model {
     }
 
     public void setRockInfo(int RockPosX, int RockPosY) {
-        arrPosX.add(RockPosX);  //  -1, 0, 1
-        arrPosY.add(RockPosY);  //  岩のy座標
+        arrRockPosX.add(RockPosX);  //  -1, 0, 1
+        arrRockPosY.add(RockPosY);  //  岩のy座標
     }
 
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
-        for (int i=0; i<arrPosX.size(); i++) {
-            if (arrPosX.get(i) == playerPosX && arrPosY.get(i) == 300) {
+        for (int i=0; i<arrRockPosX.size(); i++) {
+            if (arrRockPosX.get(i) == playerPosX && arrRockPosY.get(i) == 300) {
                 return true;
             }
         }
