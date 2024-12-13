@@ -37,20 +37,11 @@ public class Controller{
             }
         });
 
-        // ボタンがクリックされたときのイベントリスナー
-        view.getScoreButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                model.increaseScore(); // スコアを増加
-                view.getScoreLabel().setText("Score: " + model.getScore()); // ラベルを更新
-            }
-        });
-
         new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 if(model.isGameOver()){
-                    view.getScoreButton().setEnabled(false);
+                    // ゲームオーバー処理
                     view.getScoreLabel().setText("Time Over!");
                 }
             }
