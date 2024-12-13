@@ -14,20 +14,19 @@ public class Model {
     private int remainingTime;
     private boolean isGameStarted;
     private boolean isGameOver;
-    private int position;
-    private boolean collision;
+    private int playerPosX;
 
-    ArrayList<Integer> arrPosX;
-    ArrayList<Integer> arrPosY;
+    ArrayList<Integer> arrRockPosX;
+    ArrayList<Integer> arrRockPosY;
     public Model() {
         score = 0; // 初期スコアは0
-        position = 0;   //初期位置は0 (中央のレーン)
+        playerPosX = 0;   //初期位置は0 (中央のレーン)
         remainingTime = 100;
         isGameStarted = true;
         isGameOver = false;
 
-        arrPosX = new ArrayList<Integer>();
-        arrPosY = new ArrayList<Integer>();
+        arrRockPosX = new ArrayList<Integer>();
+        arrRockPosY = new ArrayList<Integer>();
 
 
         timer = new Timer(1000, new ActionListener(){
@@ -50,31 +49,42 @@ public class Model {
     // +-----------+-----+------+-----+
 
     public void moveToRight() {
-        if (position != 1) position += 1;
+        if (playerPosX != 1) playerPosX += 1;
     }
 
     public void moveToLeft() {
-        if (position != -1) position -= 1;
+        if (playerPosX != -1) playerPosX -= 1;
     }
 
-    public int getPosition() {
-        return position;
+    public ArrayList<Integer> getRockPosY() {
+        return arrRockPosY;
+    }
+
+    //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
+    public void increaseRockPosY() {
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
+        }
+    }
+
+    public int getPlayerPosX() {
+        return playerPosX;
     }
 
     public int getScore() {
         return score;
     }
 
-    public void setRockInfo(int posX, int posY) {
-        arrPosX.add(posX);  //  -1, 0, 1
-        arrPosY.add(posY);  //  岩のy座標
+    public void setRockInfo(int RockPosX, int RockPosY) {
+        arrRockPosX.add(RockPosX);  //  -1, 0, 1
+        arrRockPosY.add(RockPosY);  //  岩のy座標
     }
 
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
-    //  1つでも一致するなら衝突とみなす(trueを返す)
+    //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
-        for (int i=0; i<arrPosX.size(); i++) {
-            if (arrPosX.get(i) == position && arrPosY.get(i) == 300) {
+        for (int i=0; i<arrRockPosX.size(); i++) {
+            if (arrRockPosX.get(i) == playerPosX && arrRockPosY.get(i) == 300) {
                 return true;
             }
         }
