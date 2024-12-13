@@ -1,5 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.border.LineBorder;
+
 //こっちをいじる。
 // Vはユーザーに情報を表示する(主にJ~~関係)
 // Vは、Mからデータを取得、Cの入力によって表示を変える
@@ -7,25 +12,35 @@ import java.awt.*;
 public class View extends JFrame {
     private JLabel scoreLabel;
     private JButton scoreButton;
+    private LanePanel l;
 
     public View() {
         //フレーム設定
         setTitle("MVC Game Example");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 1000);
+        setSize(600, 1000);
         setLayout(new BorderLayout());
 
-        //ラベルとボタン
+        //ラベル
         //scoreLabel = new JLabel("Score: 0", SwingConstants.CENTER);
         //scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         //add(scoreLabel, BorderLayout.CENTER);
-        //scoreButton = new JButton("Increase Score");
-        //add(scoreButton, BorderLayout.SOUTH);
 
         //背景
         LanePanel lanePanel = new LanePanel();
+        lanePanel.setLayout(new GridLayout(1, 3)); // 横に3つ並べるGridLayout
         lanePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+        lanePanel.setSize(300,1000);
+                lanePanel.setLayout(new GridLayout(1, 3)); // 横に3つ並べるGridLayout
+                for (int i = 0; i < 3; i++) {
+                    l = new LanePanel();
+                    lanePanel.add(l);
+                    l.setBorder(new LineBorder(Color.white, 3));
+                }
+                this.add(lanePanel, BorderLayout.CENTER); // 横並びのLaneを中央に配置
+        lanePanel.setOpaque(false);//背景を透過するやつ。各JPanelに入れる。
         add(lanePanel, BorderLayout.WEST);
+        lanePanel.setPreferredSize(new Dimension(600, 1000)); // 幅を300pxに設定
         
         // //プレーヤー
         // public void paintComponent(Graphics g){
@@ -40,9 +55,6 @@ public class View extends JFrame {
         // }
         
 
-        
-        //setOpaque()//背景を透過するやつ。各JPanelに入れる。
-        
         // デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -113,8 +125,4 @@ public class View extends JFrame {
     public JLabel getScoreLabel() {
         return scoreLabel;
     }
-
-    // public JButton getScoreButton() {
-    //     return scoreButton;
-    // }
 }
