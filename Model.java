@@ -12,6 +12,8 @@ public class Model {
     private int score;
     private Timer timer;
     private int remainingTime;
+    private boolean isTitleScene;
+    private boolean isPlayScene;
     private boolean isGameStarted;
     private boolean isGameOver;
     private int playerPosX;
@@ -22,7 +24,8 @@ public class Model {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
         remainingTime = 100;
-        isGameStarted = true;
+        isTitleScene = true;
+        isGameStarted = false;
         isGameOver = false;
 
         arrRockPosX = new ArrayList<Integer>();
@@ -60,6 +63,9 @@ public class Model {
         return playerPosX;
     }
 
+    // +------------------------------------------------------------------+
+    // +------------------------------------------------------------------+
+
     public void setRockInfo(int RockPosX, int RockPosY) {
         arrRockPosX.add(RockPosX);  //  -1, 0, 1
         arrRockPosY.add(RockPosY);  //  岩のy座標
@@ -96,6 +102,9 @@ public class Model {
         return arrRockPosY;
     }
 
+    // +------------------------------------------------------------------+
+    // +------------------------------------------------------------------+
+
     public void increaseScore() {
         score++;
     }
@@ -106,6 +115,28 @@ public class Model {
 
     public int getRemainingTime() {
         return remainingTime;
+    }
+
+    // +------------------------------------------------------------------+
+    // +------------------------------------------------------------------+
+
+    public void goToPlayScene() {
+        isTitleScene = false;
+        isPlayScene = true;
+    }
+
+    //  必要かどうかは不明...
+    public void backToTitleScene() {
+        isPlayScene = false;
+        isTitleScene = true;
+    }
+
+    public boolean isTitleScene() {
+        return isTitleScene;
+    }
+
+    public boolean isPlayScene() {
+        return isPlayScene;
     }
 
     public boolean isGameStarted() {
