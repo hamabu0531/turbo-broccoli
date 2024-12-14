@@ -27,9 +27,6 @@ public class Controller{
                 }else if(e.getKeyCode()==KeyEvent.VK_LEFT){
                     model.moveToLeft();
                 }
-                else if(e.getKeyChar()=='e'){
-                    //model.stopGame();
-                }
             }
             public void keyReleased(KeyEvent e){
 
