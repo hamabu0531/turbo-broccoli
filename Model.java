@@ -81,7 +81,7 @@ public class Model {
     }
 
     public void deleteRock() {
-        for (int i=0; i<arrRockPosY.size(); i++) {
+        for (int i=arrRockPosY.size()-1; i>=0; i++) {
             if (arrRockPosY.get(i) > 300) {
                 arrRockPosX.remove(i);
                 arrRockPosY.remove(i);
