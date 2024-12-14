@@ -12,6 +12,7 @@ import javax.swing.*;
 public class Controller{
     private Model model;
     private View view;
+    private Timer gameTimer;
 
     public Controller(Model model, View view) {
         this.model = model;
@@ -27,9 +28,6 @@ public class Controller{
                 }else if(e.getKeyCode()==KeyEvent.VK_LEFT){
                     model.moveToLeft();
                 }
-                else if(e.getKeyChar()=='e'){
-                    //model.stopGame();
-                }
             }
             public void keyReleased(KeyEvent e){
 
@@ -43,32 +41,29 @@ public class Controller{
         model.setRockInfo(0, 0);
 
         // 一定時間ごとに岩を移動
-        new Timer(10, new ActionListener() {
+        gameTimer = new Timer(10, new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent e){
             // 岩を移動する関数
             ArrayList<Integer> al = model.getRockPosY();
             for(int i=0; i<al.size(); i++){
                 model.increaseRockPosY();
+                if(al.get(i)>300){
+                    // 岩を削除する関数
+                }
             }
+
+            System.out.println("PlayerPosX = " + model.getPlayerPosX());
 
             // 衝突判定関数
             if(model.checkCollision()){
                 model.stopGame();
+                gameTimer.stop();
+                System.out.println("You Lose...");
             }
+            
            }
-        }).start();
-
-
-        new Timer(100, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(model.isGameOver()){
-                    // ゲームオーバー処理
-                    //System.out.println("You Lose...");
-                }
-                System.out.println("PlayerPosX = " + model.getPlayerPosX());
-            }
-        }).start();
+        });
+        gameTimer.start();
     }
 }
