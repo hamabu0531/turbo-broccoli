@@ -80,6 +80,15 @@ public class Model {
         arrRockPosY.add(RockPosY);  //  岩のy座標
     }
 
+    public void deleteRock() {
+        for (int i=arrRockPosY.size()-1; i>=0; i++) {
+            if (arrRockPosY.get(i) > 300) {
+                arrRockPosX.remove(i);
+                arrRockPosY.remove(i);
+            }
+        }
+    }
+
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
