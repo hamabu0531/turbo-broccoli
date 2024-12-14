@@ -45,7 +45,7 @@ public class Model {
     // +-----------+-----+------+-----+
     // | position  | -1  |  0   | 1   |
     // +-----------+-----+------+-----+
-    // | 位置      | 左  | 中央 | 右  |
+    // | 位置       | 左  | 中央 | 右   |
     // +-----------+-----+------+-----+
 
     public void moveToRight() {
@@ -56,23 +56,8 @@ public class Model {
         if (playerPosX != -1) playerPosX -= 1;
     }
 
-    public ArrayList<Integer> getRockPosY() {
-        return arrRockPosY;
-    }
-
-    //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
-    public void increaseRockPosY() {
-        for (int i=0; i<arrRockPosY.size(); i++) {
-            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
-        }
-    }
-
     public int getPlayerPosX() {
         return playerPosX;
-    }
-
-    public int getScore() {
-        return score;
     }
 
     public void setRockInfo(int RockPosX, int RockPosY) {
@@ -89,6 +74,13 @@ public class Model {
         }
     }
 
+    //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
+    public void increaseRockPosY() {
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
+        }
+    }
+
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
@@ -100,8 +92,16 @@ public class Model {
         return false;
     }
 
+    public ArrayList<Integer> getRockPosY() {
+        return arrRockPosY;
+    }
+
     public void increaseScore() {
         score++;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public int getRemainingTime() {
