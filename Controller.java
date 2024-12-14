@@ -45,13 +45,9 @@ public class Controller{
            @Override
            public void actionPerformed(ActionEvent e){
             // 岩を移動する関数
-            ArrayList<Integer> al = model.getRockPosY();
-            for(int i=0; i<al.size(); i++){
-                model.increaseRockPosY();
-                if(al.get(i)>300){
-                    // 岩を削除する関数
-                }
-            }
+            // ArrayList<Integer> al = model.getRockPosY();
+            model.increaseRockPosY();
+            model.deleteRock();
 
             System.out.println("PlayerPosX = " + model.getPlayerPosX());
 
