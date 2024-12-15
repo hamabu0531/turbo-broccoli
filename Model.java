@@ -12,6 +12,8 @@ public class Model {
     private int score;
     private Timer timer;
     private int remainingTime;
+    private boolean isTitleScene;
+    private boolean isPlayScene;
     private boolean isGameStarted;
     private boolean isGameOver;
     private int playerPosX;
@@ -22,7 +24,8 @@ public class Model {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
         remainingTime = 100;
-        isGameStarted = true;
+        isTitleScene = true;
+        isGameStarted = false;
         isGameOver = false;
 
         arrRockPosX = new ArrayList<Integer>();
@@ -45,7 +48,7 @@ public class Model {
     // +-----------+-----+------+-----+
     // | position  | -1  |  0   | 1   |
     // +-----------+-----+------+-----+
-    // | 位置      | 左  | 中央 | 右  |
+    // | 位置       | 左  | 中央 | 右   |
     // +-----------+-----+------+-----+
 
     public void moveToRight() {
@@ -56,24 +59,12 @@ public class Model {
         if (playerPosX != -1) playerPosX -= 1;
     }
 
-    public ArrayList<Integer> getRockPosY() {
-        return arrRockPosY;
-    }
-
-    //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
-    public void increaseRockPosY() {
-        for (int i=0; i<arrRockPosY.size(); i++) {
-            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
-        }
-    }
-
     public int getPlayerPosX() {
         return playerPosX;
     }
 
-    public int getScore() {
-        return score;
-    }
+    // +------------------------------------------------------------------+
+    // +------------------------------------------------------------------+
 
     public void setRockInfo(int RockPosX, int RockPosY) {
         arrRockPosX.add(RockPosX);  //  -1, 0, 1
@@ -89,6 +80,13 @@ public class Model {
         }
     }
 
+    //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
+    public void increaseRockPosY() {
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
+        }
+    }
+
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
@@ -100,12 +98,45 @@ public class Model {
         return false;
     }
 
+    public ArrayList<Integer> getRockPosY() {
+        return arrRockPosY;
+    }
+
+    // +------------------------------------------------------------------+
+    // +------------------------------------------------------------------+
+
     public void increaseScore() {
         score++;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public int getRemainingTime() {
         return remainingTime;
+    }
+
+    // +------------------------------------------------------------------+
+    // +------------------------------------------------------------------+
+
+    public void goToPlayScene() {
+        isTitleScene = false;
+        isPlayScene = true;
+    }
+
+    //  必要かどうかは不明...
+    public void backToTitleScene() {
+        isPlayScene = false;
+        isTitleScene = true;
+    }
+
+    public boolean isTitleScene() {
+        return isTitleScene;
+    }
+
+    public boolean isPlayScene() {
+        return isPlayScene;
     }
 
     public boolean isGameStarted() {
