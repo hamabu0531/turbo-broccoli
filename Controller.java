@@ -26,12 +26,12 @@ public class Controller{
                 // Playerの移動
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT && model.isPlayScene() && !model.isGameOver()){
                     model.moveToRight();
-                    //view.updatePosition(model.getPlayerPosX());
+                    view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX() + 1);
 
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
                 }else if(e.getKeyCode()==KeyEvent.VK_LEFT && model.isPlayScene() && !model.isGameOver()){
                     model.moveToLeft();
-                    //view.updatePosition(model.getPlayerPosX());
+                    view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX() + 1);
 
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
                 }
