@@ -24,11 +24,15 @@ public class Controller{
             @Override
             public void keyPressed(KeyEvent e){
                 // Playerの移動
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT && model.isPlayScene()){
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT && model.isPlayScene() && !model.isGameOver()){
                     model.moveToRight();
+                    //view.updatePosition(model.getPlayerPosX());
+
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
-                }else if(e.getKeyCode()==KeyEvent.VK_LEFT && model.isPlayScene()){
+                }else if(e.getKeyCode()==KeyEvent.VK_LEFT && model.isPlayScene() && !model.isGameOver()){
                     model.moveToLeft();
+                    //view.updatePosition(model.getPlayerPosX());
+
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
                 }
 
@@ -52,6 +56,12 @@ public class Controller{
                     model.setRockInfo(0, 0);
                 }else if(e.getKeyCode()==KeyEvent.VK_3){
                     model.setRockInfo(1, 0);
+                }
+
+                // アーマー付与(デバッグ用)
+                if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                    model.getArmor();
+                    System.out.println("You got armored");
                 }
             }
             public void keyReleased(KeyEvent e){
@@ -78,11 +88,17 @@ public class Controller{
 
             // 衝突判定関数
             if(model.checkCollision()){
-                model.stopGame();
-                gameTimer.stop();
-                System.out.println("You Lose...");
-            }
-            
+                if(model.hasArmor()){
+                    model.breakArmor();
+
+                    System.out.println("Armor has broken!");
+                }else{
+                    model.stopGame();
+                    gameTimer.stop();
+
+                    System.out.println("You Lose...");
+                }
+            }            
            }
         });
     }
