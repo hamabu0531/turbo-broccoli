@@ -46,7 +46,7 @@ public class View extends JFrame {
         playerPanel = new PlayerPanel();
         playerPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
-
+        
         //岩
         rockPanel = new RockPanel();
         rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
@@ -55,42 +55,42 @@ public class View extends JFrame {
         // デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
         this.requestFocusInWindow();
-
+        
         setVisible(true);
     }
     
-/////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
 ///背景クラス
     public class LanePanel extends JPanel {
-    
+        
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             Color DarkGreen = new Color(0, 100, 0);
-    
+            
             // グラデーションの設定
             GradientPaint gradient = new GradientPaint(
                 0, 0, Color.GREEN, // 開始位置と色
                 0, getHeight(), DarkGreen// 終了位置と色
-            );
+                );
     
-            // グラデーションを適用して塗りつぶす
-            g2d.setPaint(gradient);
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+                // グラデーションを適用して塗りつぶす
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
         }
-    }
-
+        
 //////////////////////////////////////////////////////////////////////////
 ///プレーヤークラス
-    public class PlayerPanel extends JPanel{
-        // メンバ変数
-        int x, y, width, height; // x=0, 1, 2で位置決定
-        Image image;
-        //private int playerPosX = 1;
+public class PlayerPanel extends JPanel{
+    // メンバ変数
+    int x, y, width, height; // x=0, 1, 2で位置決定
+    Image image;
+    //private int playerPosX = 1;
     
-        // コンストラクタ
-        public PlayerPanel(){
+    // コンストラクタ
+    public PlayerPanel(){
             x = 1; y = 0;
             width = 100; height = 100;
             try{
@@ -100,7 +100,7 @@ public class View extends JFrame {
             }
             setOpaque(false);//背景を透過するやつ。
         }
-    
+        
         public void paintComponent(Graphics g){
             int offsetX = 50, offsetY = 700;
             super.paintComponent(g);
@@ -111,7 +111,7 @@ public class View extends JFrame {
                 g.fillOval(x*200+offsetX, y*100+offsetY, width, height);
             }
         }
-    
+        
         // プレイヤー位置を更新して再描画.
         //★★Controllerで呼ばれる。
         public void updatePlayerPos(int playerPosX) {
@@ -119,14 +119,14 @@ public class View extends JFrame {
             repaint();
         }
     }
-/////////////////////////////////////////////////////////////////////////
-/// 岩クラス
+    /////////////////////////////////////////////////////////////////////////
+    /// 岩クラス
     public class RockPanel extends JPanel{
         // メンバ変数
         int x, y, width, height; // x=0, 1, 2で位置決定
         Image image;
         //private int playerPosX = 1;
-
+        
         // コンストラクタ
         public RockPanel(){
             x = 1; y = 0;
@@ -138,7 +138,7 @@ public class View extends JFrame {
             }
             setOpaque(false);//背景を透過するやつ。
         }
-
+        
         public void paintComponent(Graphics g){
             int offsetX = 50, offsetY = 200;
             super.paintComponent(g);
@@ -149,7 +149,7 @@ public class View extends JFrame {
                 g.fillOval(x*200+offsetX, y*100+offsetY, width, height);
             }
         }
-
+        
         // プレイヤー位置を更新して再描画.
         //★★Controllerで呼ばれる。
         public void updateRockPos(int playerPosX) {
@@ -157,4 +157,13 @@ public class View extends JFrame {
             repaint();
         }
     }
+
+    public PlayerPanel getPlayerPanel() {
+        return playerPanel;
+    }
+
+    public RockPanel getRockPanel() {
+        return rockPanel;
+    }
+
 }
