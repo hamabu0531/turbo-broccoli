@@ -18,6 +18,12 @@ public class Model {
     private boolean isGameOver;
     private int playerPosX;
 
+    //  使うかわからないが、一応作った変数
+    // +------------------------------------------------------------------+
+    private boolean armored;
+    // +------------------------------------------------------------------+
+    
+
     ArrayList<Integer> arrRockPosX;
     ArrayList<Integer> arrRockPosY;
     public Model() {
@@ -27,6 +33,10 @@ public class Model {
         isTitleScene = true;
         isGameStarted = false;
         isGameOver = false;
+
+        // +------------------------------------------------------------------+
+        armored = false;
+        // +------------------------------------------------------------------+
 
         arrRockPosX = new ArrayList<Integer>();
         arrRockPosY = new ArrayList<Integer>();
@@ -48,7 +58,7 @@ public class Model {
     // +-----------+-----+------+-----+
     // | position  | -1  |  0   | 1   |
     // +-----------+-----+------+-----+
-    // | 位置       | 左  | 中央 | 右   |
+    // | 位置       | 左  | 中央 | 右 |
     // +-----------+-----+------+-----+
 
     public void moveToRight() {
@@ -64,6 +74,7 @@ public class Model {
     }
 
     // +------------------------------------------------------------------+
+    //  岩関係
     // +------------------------------------------------------------------+
 
     public void setRockInfo(int RockPosX, int RockPosY) {
@@ -103,6 +114,7 @@ public class Model {
     }
 
     // +------------------------------------------------------------------+
+    //  システム
     // +------------------------------------------------------------------+
 
     public void increaseScore() {
@@ -118,6 +130,7 @@ public class Model {
     }
 
     // +------------------------------------------------------------------+
+    //  シーン管理
     // +------------------------------------------------------------------+
 
     public void goToPlayScene() {
@@ -155,5 +168,23 @@ public class Model {
     public void stopGame() {
         isGameOver = true;
         timer.stop();
+    }
+
+    // +------------------------------------------------------------------+
+    //  使うかわからないが、一応作った関数
+    // +------------------------------------------------------------------+
+
+    //  Armor(鎧)アイテムに触れると、1回までなら岩に当たっても死なない。
+    //  ただし、鎧は壊れる。複数取得不可。
+    public void getArmor() {
+        armored = true;
+    }
+    
+    public void breakArmor() {
+        armored = false;
+    }
+
+    public boolean hasArmor() {
+        return armored;
     }
 }
