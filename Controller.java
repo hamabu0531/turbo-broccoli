@@ -23,10 +23,34 @@ public class Controller{
         view.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e){
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                // Playerの移動
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT && model.isPlayScene()){
                     model.moveToRight();
-                }else if(e.getKeyCode()==KeyEvent.VK_LEFT){
+                    System.out.println("PlayerPosX = " + model.getPlayerPosX());
+                }else if(e.getKeyCode()==KeyEvent.VK_LEFT && model.isPlayScene()){
                     model.moveToLeft();
+                    System.out.println("PlayerPosX = " + model.getPlayerPosX());
+                }
+
+                // Titleシーン->Playシーン
+                if(e.getKeyCode()==KeyEvent.VK_SPACE && model.isTitleScene()){
+                    model.goToPlayScene();
+                    System.out.println("Title->Play");
+                }
+
+                // Playシーン->Titleシーン
+                if(e.getKeyChar()=='q' && model.isGameOver()){
+                    model.backToTitleScene();
+                    System.out.println("Play->Title");
+                }
+
+                // 岩生成(デバッグ用)
+                if(e.getKeyCode()==KeyEvent.VK_1){
+                    model.setRockInfo(-1, 0);
+                }else if(e.getKeyCode()==KeyEvent.VK_2){
+                    model.setRockInfo(0, 0);
+                }else if(e.getKeyCode()==KeyEvent.VK_3){
+                    model.setRockInfo(1, 0);
                 }
             }
             public void keyReleased(KeyEvent e){
@@ -38,7 +62,7 @@ public class Controller{
         });
 
         // 岩生成(テスト)
-        model.setRockInfo(0, 0);
+        //model.setRockInfo(0, 0);
 
         // 一定時間ごとに岩を移動
         gameTimer = new Timer(10, new ActionListener() {
@@ -49,7 +73,7 @@ public class Controller{
             model.increaseRockPosY();
             model.deleteRock();
 
-            System.out.println("PlayerPosX = " + model.getPlayerPosX());
+            
 
             // 衝突判定関数
             if(model.checkCollision()){
