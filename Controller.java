@@ -35,6 +35,7 @@ public class Controller{
                 // Titleシーン->Playシーン
                 if(e.getKeyCode()==KeyEvent.VK_SPACE && model.isTitleScene()){
                     model.goToPlayScene();
+                    gameTimer.start();
                     System.out.println("Title->Play");
                 }
 
@@ -84,6 +85,5 @@ public class Controller{
             
            }
         });
-        gameTimer.start();
     }
 }
