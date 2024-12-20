@@ -10,18 +10,18 @@ import java.awt.event.*;
 // Vはユーザーに情報を表示する(主にJ~~関係)
 // Vは、Mからデータを取得、Cの入力によって表示を変える
 
-public class View extends JFrame implements ModelListener {
+public class View extends JFrame {
     private LanePanel l;
-    private Model model;
+    //private Model model;
     private PlayerPanel playerPanel;
 
-    public View(Model model) {
-        this.model = model;
+    public View() {
+        //this.model = model;
         
         //リスナーをModelに登録
         //★★リスナーを追加するaddModelListenerの定義をしてほしい．Modelで
         //★★状態変更をリスナーに伝えるnotifyListeners的なのを定義してほしい．Modelで
-        model.addModelListener(this);
+        //model.addModelListener(this);
 
         //フレーム設定
         setTitle("MVC Game Example");
@@ -53,12 +53,6 @@ public class View extends JFrame implements ModelListener {
         playerPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
 
-    // モデルの変更を監視してプレイヤーパネルを更新
-    //★★ Modelの状態が変化されたときに下のリスナーに通知を送る？呼ぶ？ModelListener的なインターフェースを入れてほしい．Modelで
-        @Override
-        public void ModelUpdate() {
-            playerPanel.updatePosition(model.getPlayerPosX()); // プレイヤー位置を更新
-        }
 
         // デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
@@ -67,6 +61,11 @@ public class View extends JFrame implements ModelListener {
         setVisible(true);
     }
     
+    // モデルの変更を監視してプレイヤーパネルを更新
+    //★★ Modelの状態が変化されたときに下のリスナーに通知を送る？呼ぶ？ModelListener的なインターフェースを入れてほしい．Modelで
+    // public void ModelUpdate() {
+    //     playerPanel.updatePosition(model.getPlayerPosX()); // プレイヤー位置を更新
+    // }
 /////////////////////////////////////////////////////////////////
 ///背景クラス
     public class LanePanel extends JPanel {
