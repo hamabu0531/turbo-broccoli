@@ -142,6 +142,7 @@ public class Model {
     public void backToTitleScene() {
         isPlayScene = false;
         isTitleScene = true;
+        isGameOver = false;
     }
 
     public boolean isTitleScene() {
