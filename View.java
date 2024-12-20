@@ -12,16 +12,10 @@ import java.awt.event.*;
 
 public class View extends JFrame {
     private LanePanel l;
-    //private Model model;
     private PlayerPanel playerPanel;
+    private RockPanel rockPanel;
 
     public View() {
-        //this.model = model;
-        
-        //リスナーをModelに登録
-        //★★リスナーを追加するaddModelListenerの定義をしてほしい．Modelで
-        //★★状態変更をリスナーに伝えるnotifyListeners的なのを定義してほしい．Modelで
-        //model.addModelListener(this);
 
         //フレーム設定
         setTitle("MVC Game Example");
@@ -53,7 +47,11 @@ public class View extends JFrame {
         playerPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
 
-
+        //岩
+        rockPanel = new RockPanel();
+        rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
+        layeredPane.add(rockPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
+        
         // デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -61,11 +59,6 @@ public class View extends JFrame {
         setVisible(true);
     }
     
-    // モデルの変更を監視してプレイヤーパネルを更新
-    //★★ Modelの状態が変化されたときに下のリスナーに通知を送る？呼ぶ？ModelListener的なインターフェースを入れてほしい．Modelで
-    // public void ModelUpdate() {
-    //     playerPanel.updatePosition(model.getPlayerPosX()); // プレイヤー位置を更新
-    // }
 /////////////////////////////////////////////////////////////////
 ///背景クラス
     public class LanePanel extends JPanel {
@@ -94,7 +87,7 @@ public class View extends JFrame {
         // メンバ変数
         int x, y, width, height; // x=0, 1, 2で位置決定
         Image image;
-        private int playerPosX = 1;
+        //private int playerPosX = 1;
     
         // コンストラクタ
         public PlayerPanel(){
@@ -119,9 +112,48 @@ public class View extends JFrame {
             }
         }
     
-        // プレイヤー位置を更新して再描画
-        public void updatePosition(int playerPosX) {
-            this.playerPosX = playerPosX;
+        // プレイヤー位置を更新して再描画.
+        //★★Controllerで呼ばれる。
+        public void updatePlayerPos(int playerPosX) {
+            this.x = playerPosX;
+            repaint();
+        }
+    }
+/////////////////////////////////////////////////////////////////////////
+/// 岩クラス
+    public class RockPanel extends JPanel{
+        // メンバ変数
+        int x, y, width, height; // x=0, 1, 2で位置決定
+        Image image;
+        //private int playerPosX = 1;
+
+        // コンストラクタ
+        public RockPanel(){
+            x = 1; y = 0;
+            width = 100; height = 100;
+            try{
+                image = ImageIO.read(new File("URL"));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+            setOpaque(false);//背景を透過するやつ。
+        }
+
+        public void paintComponent(Graphics g){
+            int offsetX = 50, offsetY = 200;
+            super.paintComponent(g);
+            if(image!=null){
+                g.drawImage(image, x*200+offsetX, y*100+offsetY, getFocusCycleRootAncestor());
+            }else{
+                g.setColor(Color.ORANGE);
+                g.fillOval(x*200+offsetX, y*100+offsetY, width, height);
+            }
+        }
+
+        // プレイヤー位置を更新して再描画.
+        //★★Controllerで呼ばれる。
+        public void updateRockPos(int playerPosX) {
+            this.x = playerPosX;
             repaint();
         }
     }
