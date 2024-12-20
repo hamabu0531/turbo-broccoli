@@ -42,14 +42,14 @@ public class View extends JFrame implements ModelListener {
         layeredPane.add(lanePanel, JLayeredPane.DEFAULT_LAYER);
                 
         for (int i = 0; i <= 2; i++) {
-            LanePanel l = new LanePanel();
+            l = new LanePanel();
             l.setBounds(i * 200, 0, 200, 1000); // 3つの列として配置
             l.setBorder(new LineBorder(Color.white, 3));
             lanePanel.add(l);
         }
         
         //プレーヤー
-        PlayerPanel playerPanel = new PlayerPanel();
+        playerPanel = new PlayerPanel();
         playerPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
 
