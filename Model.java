@@ -91,6 +91,13 @@ public class Model {
         }
     }
 
+    public void resetRock() {
+        for (int i=arrRockPosY.size()-1; i>=0; i--) {
+            arrRockPosX.remove(i);
+            arrRockPosY.remove(i);
+        }
+    }
+
     //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
     public void increaseRockPosY() {
         for (int i=0; i<arrRockPosY.size(); i++) {
@@ -138,7 +145,6 @@ public class Model {
         isPlayScene = true;
     }
 
-    //  必要かどうかは不明...
     public void backToTitleScene() {
         isPlayScene = false;
         isTitleScene = true;
