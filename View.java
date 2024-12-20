@@ -13,7 +13,7 @@ import java.awt.event.*;
 public class View extends JFrame implements ModelListener {
     private LanePanel l;
     private Model model;
-    private PlaterPanel playerPanel;
+    private PlayerPanel playerPanel;
 
     public View(Model model) {
         this.model = model;
