@@ -72,9 +72,6 @@ public class Controller{
             }
         });
 
-        // 岩生成(テスト)
-        //model.setRockInfo(0, 0);
-
         // 一定時間ごとに岩を移動
         gameTimer = new Timer(10, new ActionListener() {
            @Override
@@ -84,7 +81,10 @@ public class Controller{
             model.increaseRockPosY();
             model.deleteRock();
 
-            
+            // 岩の位置を更新して再描画
+            for(int i=0; i<model.getRockPosY().size(); i++){
+                view.getRockPanel().updateRockPos(model.getRockPosY().get(i));
+            }
 
             // 衝突判定関数
             if(model.checkCollision()){
