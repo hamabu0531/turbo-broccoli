@@ -146,16 +146,26 @@ public class PlayerPanel extends JPanel{
                 g.drawImage(image, x*200+offsetX, y*100+offsetY, getFocusCycleRootAncestor());
             }else{
                 g.setColor(Color.ORANGE);
-                g.fillOval(x*200+offsetX, y*100+offsetY, width, height);
+                g.fillOval(x*200+offsetX, (int)(y*1.35+offsetY), width, height);
+
+                // はまぶーによる変更
+                //g.fillOval(x*200+offsetX, y*100+offsetY, width, height);
             }
         }
         
         // プレイヤー位置を更新して再描画.
         //★★Controllerで呼ばれる。
-        public void updateRockPos(int playerPosX) {
-            this.x = playerPosX;
+        public void updateRockPos(int rockPosY) {
+            this.y = rockPosY;
             repaint();
         }
+
+        // はまぶーによる変更
+
+        // public void updateRockPos(int playerPosX) {
+        //     this.x = playerPosX;
+        //     repaint();
+        // }
     }
 
     public PlayerPanel getPlayerPanel() {
