@@ -26,13 +26,13 @@ public class Controller{
                 // Playerの移動
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT && model.isPlayScene() && !model.isGameOver()){
                     model.moveToRight();
-                    view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX() + 1);
-
+                    view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
+                    //ブロッコリーの修正：＋１の削除
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
                 }else if(e.getKeyCode()==KeyEvent.VK_LEFT && model.isPlayScene() && !model.isGameOver()){
                     model.moveToLeft();
-                    view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX() + 1);
-
+                    view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
+                    //ブロッコリーの修正：＋１の削除
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
                 }
 
@@ -52,10 +52,13 @@ public class Controller{
                 // 岩生成(デバッグ用)
                 if(e.getKeyCode()==KeyEvent.VK_1){
                     model.setRockInfo(-1, 0);
+                    //view.getRockPanel().EmergeRock(-1, 0); ブロッコリーがデバッグ用に加えた．
                 }else if(e.getKeyCode()==KeyEvent.VK_2){
                     model.setRockInfo(0, 0);
+                    //view.getRockPanel().EmergeRock(0, 0);      〃        .
                 }else if(e.getKeyCode()==KeyEvent.VK_3){
                     model.setRockInfo(1, 0);
+                    //view.getRockPanel().EmergeRock(1, 0);      〃        .
                 }
 
                 // アーマー付与(デバッグ用)
