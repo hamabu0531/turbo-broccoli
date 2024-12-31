@@ -48,11 +48,12 @@ public class View extends JFrame {
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
         
         //岩
+        // rockPanel = new RockPanel(layeredPane);
         rockPanel = new RockPanel();
         rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(rockPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
         
-        // デフォルトでwindow自体をfocusする(キー入力のため)
+        //デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
         this.requestFocusInWindow();
         

@@ -53,12 +53,15 @@ public class Controller{
                 if(e.getKeyCode()==KeyEvent.VK_1){
                     model.setRockInfo(-1, 0);
                     //view.getRockPanel().EmergeRock(-1, 0); ブロッコリーがデバッグ用に加えた．
+                    view.getRockPanel().EmergeRock(-1, 0);
                 }else if(e.getKeyCode()==KeyEvent.VK_2){
                     model.setRockInfo(0, 0);
                     //view.getRockPanel().EmergeRock(0, 0);      〃        .
+                    view.getRockPanel().EmergeRock(0, 0);
                 }else if(e.getKeyCode()==KeyEvent.VK_3){
                     model.setRockInfo(1, 0);
                     //view.getRockPanel().EmergeRock(1, 0);      〃        .
+                    view.getRockPanel().EmergeRock(1, 0);
                 }
 
                 // アーマー付与(デバッグ用)
