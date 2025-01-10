@@ -6,18 +6,18 @@ import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 import java.awt.event.*;
 
-/// 岩クラス
-public class RockPanel extends JPanel{
+/// アイテムクラス。得るとスコアが上がる的な。
+public class ItemPanel extends JPanel{
     // メンバ変数
     int x, y, width, height; // x=-1, 0, 1で位置決定
     Image image;
     
     // コンストラクタ
-    public RockPanel(){
+    public ItemPanel(){
         x = 0; y = 0;
         width = 100; height = 100;
         try{
-            image = ImageIO.read(new File("Stone(1).png"));
+            image = ImageIO.read(new File("URL"));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -28,22 +28,22 @@ public class RockPanel extends JPanel{
         int offsetX = 250, offsetY = -100;
         super.paintComponent(g);
         if(image!=null){
-            g.drawImage(image, x*200+offsetX-40, y*1+offsetY, getFocusCycleRootAncestor());
-            //顔挿入時はoffsetX-20
+            g.drawImage(image, x*200+offsetX, y*100+offsetY, getFocusCycleRootAncestor());
         }else{
-            g.setColor(Color.ORANGE);
+            g.setColor(Color.PINK);
             g.fillOval(x*200+offsetX, (int)(y*1.00+offsetY), width, height);
+
         }
     }
 
-    public void updateRockPos(int rockPosY) {
-        this.y = rockPosY;
+    public void updateItemPos(int itemPosY) {
+        this.y = itemPosY;
         repaint();
     }
 
-    public void setRockPos(int rockPosX, int rockPosY) {
-        this.x = rockPosX;
-        this.y = rockPosY;
+    public void setItemPos(int itemPosX, int itemPosY) {
+        this.x = itemPosX;
+        this.y = itemPosY;
         repaint();
     }
 }
