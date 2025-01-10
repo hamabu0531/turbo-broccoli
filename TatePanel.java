@@ -7,13 +7,13 @@ import javax.swing.border.LineBorder;
 import java.awt.event.*;
 
 /// アイテムクラス。得るとスコアが上がる的な。
-public class ItemPanel extends JPanel{
+public class TatePanel extends JPanel{
     // メンバ変数
     int x, y, width, height; // x=-1, 0, 1で位置決定
     Image image;
     
     // コンストラクタ
-    public ItemPanel(){
+    public TatePanel(){
         x = 0; y = 0;
         width = 100; height = 100;
         try{
@@ -36,14 +36,14 @@ public class ItemPanel extends JPanel{
         }
     }
 
-    public void updateItemPos(int itemPosY) {
-        this.y = itemPosY;
+    public void updateTatePos(int tatePosY) {
+        this.y = tatePosY;
         repaint();
     }
 
-    public void setItemPos(int itemPosX, int itemPosY) {
-        this.x = itemPosX;
-        this.y = itemPosY;
+    public void setTatePos(int tatePosX, int tatePosY) {
+        this.x = tatePosX;
+        this.y = tatePosY;
         repaint();
     }
 }
