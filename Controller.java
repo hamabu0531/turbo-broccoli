@@ -9,27 +9,31 @@ import javax.swing.*;
 // Cはユーザー入力を処理する(Listener関係)
 // Cは、Mの更新をし、Vにイベントを伝える
 
-public class Controller{
+public class Controller {
     private Model model;
     private View view;
     private Timer gameTimer;
+    private ArrayList<RockPanel> rocks; // ArrayListに変更
+    private int deletedRock;
 
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+        rocks = new ArrayList<>(); // ArrayListを初期化
+        deletedRock = 0;
 
         model.startGame();
 
         view.addKeyListener(new KeyListener() {
             @Override
-            public void keyPressed(KeyEvent e){
+            public void keyPressed(KeyEvent e) {
                 // Playerの移動
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT && model.isPlayScene() && !model.isGameOver()){
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT && model.isPlayScene() && !model.isGameOver()) {
                     model.moveToRight();
                     view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
                     //ブロッコリーの修正：＋１の削除
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
-                }else if(e.getKeyCode()==KeyEvent.VK_LEFT && model.isPlayScene() && !model.isGameOver()){
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT && model.isPlayScene() && !model.isGameOver()) {
                     model.moveToLeft();
                     view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
                     //ブロッコリーの修正：＋１の削除
@@ -37,74 +41,81 @@ public class Controller{
                 }
 
                 // Titleシーン->Playシーン
-                if(e.getKeyCode()==KeyEvent.VK_SPACE && model.isTitleScene()){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE && model.isTitleScene()) {
                     model.goToPlayScene();
                     gameTimer.start();
                     System.out.println("Title->Play");
                 }
 
                 // Playシーン->Titleシーン
-                if(e.getKeyChar()=='q' && model.isGameOver()){
+                if (e.getKeyChar() == 'q' && model.isGameOver()) {
                     model.backToTitleScene();
                     System.out.println("Play->Title");
                 }
 
                 // 岩生成(デバッグ用)
-                
-                if(e.getKeyCode()==KeyEvent.VK_1){
+                if (e.getKeyCode() == KeyEvent.VK_1) {
                     generateRock(-1, -100);
-                }else if(e.getKeyCode()==KeyEvent.VK_2){
+                } else if (e.getKeyCode() == KeyEvent.VK_2) {
                     generateRock(0, -100);
-                }else if(e.getKeyCode()==KeyEvent.VK_3){
+                } else if (e.getKeyCode() == KeyEvent.VK_3) {
                     generateRock(1, -100);
                 }
 
                 // アーマー付与(デバッグ用)
-                if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     model.getArmor();
                     System.out.println("You got armored");
                 }
             }
-            public void keyReleased(KeyEvent e){
 
+            public void keyReleased(KeyEvent e) {
             }
-            public void keyTyped(KeyEvent e){
-        
+
+            public void keyTyped(KeyEvent e) {
             }
         });
 
         // 一定時間ごとに岩を移動
         gameTimer = new Timer(10, new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e){
-            // 岩を移動する関数
-            // ArrayList<Integer> al = model.getRockPosY();
-            model.increaseRockPosY();
-            model.deleteRock();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 岩を移動する関数
+                model.increaseRockPosY();
 
-            // 岩の位置を更新して再描画
-            for(int i=0; i<model.getRockPosY().size(); i++){
-                view.getRockPanel().updateRockPos(model.getRockPosY().get(i));
-            }
-
-            // 衝突判定関数
-            if(model.checkCollision()){
-                if(model.hasArmor()){
-                    model.breakArmor();
-
-                    System.out.println("Armor has broken!");
-                }else{
-                    model.stopGame();
-                    gameTimer.stop();
-
-                    System.out.println("You Lose...");
+                // 削除はステージクリア後とLose時
+                // model.deleteRock();
+                for(int i=deletedRock; i<model.getRockPosY().size()-1; i++){
+                    if(model.getRockPosY().get(i) > 1200){
+                        deletedRock++;
+                    }
                 }
-            }            
-           }
+
+                // 岩の位置を更新して再描画
+                for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
+                    // ArrayListのRockPanelを更新
+                    rocks.get(i).updateRockPos(model.getRockPosY().get(i));
+                }
+
+                // 衝突判定関数
+                if (model.checkCollision()) {
+                    if (model.hasArmor()) {
+                        model.breakArmor();
+                        System.out.println("Armor has broken!");
+                    } else {
+                        model.stopGame();
+                        gameTimer.stop();
+                        System.out.println("You Lose...");
+                    }
+                }
+            }
         });
     }
-    private void generateRock(int posX, int posY){
+
+    // 岩を生成する関数
+    private void generateRock(int posX, int posY) {
         model.setRockInfo(posX, posY);
-        view.addRock(posX, posY);
+        RockPanel newRock = view.addRock(posX, posY);
+        rocks.add(newRock); // ArrayListに追加
     }
 }
