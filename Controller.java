@@ -50,18 +50,13 @@ public class Controller{
                 }
 
                 // 岩生成(デバッグ用)
+                
                 if(e.getKeyCode()==KeyEvent.VK_1){
-                    model.setRockInfo(-1, 0);
-                    //view.getRockPanel().EmergeRock(-1, 0); ブロッコリーがデバッグ用に加えた．
-                    view.getRockPanel().EmergeRock(-1, 0);
+                    generateRock(-1, -100);
                 }else if(e.getKeyCode()==KeyEvent.VK_2){
-                    model.setRockInfo(0, 0);
-                    //view.getRockPanel().EmergeRock(0, 0);      〃        .
-                    view.getRockPanel().EmergeRock(0, 0);
+                    generateRock(0, -100);
                 }else if(e.getKeyCode()==KeyEvent.VK_3){
-                    model.setRockInfo(1, 0);
-                    //view.getRockPanel().EmergeRock(1, 0);      〃        .
-                    view.getRockPanel().EmergeRock(1, 0);
+                    generateRock(1, -100);
                 }
 
                 // アーマー付与(デバッグ用)
@@ -107,5 +102,9 @@ public class Controller{
             }            
            }
         });
+    }
+    private void generateRock(int posX, int posY){
+        model.setRockInfo(posX, posY);
+        view.addRock(posX, posY);
     }
 }
