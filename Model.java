@@ -19,7 +19,8 @@ public class Model {
     private int playerPosX;
     private boolean isArmored;
     private final int WINDOW_SIZE_Y = 1000;
-    private final int PLAYER_POS_Y  = 700;
+    private final int PLAYER_POS_Y = 700;
+    private final int ROCK_RADIUS = 50;
     
     ArrayList<Integer> arrRockPosX;
     ArrayList<Integer> arrRockPosY;
@@ -102,7 +103,11 @@ public class Model {
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
         for (int i=0; i<arrRockPosX.size(); i++) {
-            if (arrRockPosX.get(i) == playerPosX && arrRockPosY.get(i) == PLAYER_POS_Y) {
+            System.out.println(arrRockPosY);
+            //  岩とプレイヤーが同じレーン & プレイヤーと岩が少しでも重なっているならば
+            if (arrRockPosX.get(i) == playerPosX 
+            && arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100
+            && arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100 ) {
                 return true;
             }
         }
