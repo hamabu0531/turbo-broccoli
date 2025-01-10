@@ -48,10 +48,6 @@ public class View extends JFrame {
         playerPanel = new PlayerPanel();
         playerPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
-        
-        //岩
-        // rockPanel = new RockPanel(layeredPane);
-        addRock(-1, 0);
 
         //スコアパネル
         scorePanel = new ScorePanel();
