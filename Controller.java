@@ -79,8 +79,15 @@ public class Controller {
                 // Playシーン->Titleシーン
                 if (e.getKeyChar() == 'q' && model.isGameOver()) {
                     model.backToTitleScene();
-                    gameBgmClip.stop();
-                    titleBgmClip.start();
+                    // 岩の配列リセット
+                    rocks.clear();
+                    model.resetRock();
+                    if(gameBgmClip!=null){
+                        gameBgmClip.stop();
+                    }
+                    if(titleBgmClip!=null){
+                        titleBgmClip.start();
+                    }
                     System.out.println("Play->Title");
                 }
 
