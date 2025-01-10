@@ -95,7 +95,7 @@ public class Model {
     //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
     public void increaseRockPosY() {
         for (int i=0; i<arrRockPosY.size(); i++) {
-            arrRockPosY.set(i, arrRockPosY.get(i) + 1);
+            arrRockPosY.set(i, arrRockPosY.get(i) + 3);
         }
     }
 
