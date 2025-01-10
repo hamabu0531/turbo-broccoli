@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 // Cはユーザー入力を処理する(Listener関係)
@@ -15,12 +16,33 @@ public class Controller {
     private Timer gameTimer;
     private ArrayList<RockPanel> rocks; // ArrayListに変更
     private int deletedRock;
+    private Clip gameoverClip, gameBgmClip, titleBgmClip;
 
     public Controller(Model model, View view) {
+        // 初期設定
         this.model = model;
         this.view = view;
         rocks = new ArrayList<>(); // ArrayListを初期化
         deletedRock = 0;
+        try{
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(Controller.class.getResource("Explosion.wav"));
+            gameoverClip = AudioSystem.getClip();
+            gameoverClip.open(audioIn);
+            AudioInputStream audioIn2 = AudioSystem.getAudioInputStream(Controller.class.getResource("Game BGMへのURL"));
+            gameBgmClip = AudioSystem.getClip();
+            gameBgmClip.open(audioIn2);
+            AudioInputStream audioIn3 = AudioSystem.getAudioInputStream(Controller.class.getResource("Title BGMへのURL"));
+            titleBgmClip = AudioSystem.getClip();
+            titleBgmClip.open(audioIn3);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        // タイトルBGMの再生
+        if(titleBgmClip!=null){
+            titleBgmClip.setFramePosition(0);
+            titleBgmClip.start();
+        }
 
         model.startGame();
 
@@ -45,11 +67,20 @@ public class Controller {
                     model.goToPlayScene();
                     gameTimer.start();
                     System.out.println("Title->Play");
+
+                    // ここでbgm流す
+                    if(gameBgmClip!=null){
+                        gameBgmClip.setFramePosition(0);
+                        gameBgmClip.start();
+                        titleBgmClip.stop();
+                    }
                 }
 
                 // Playシーン->Titleシーン
                 if (e.getKeyChar() == 'q' && model.isGameOver()) {
                     model.backToTitleScene();
+                    gameBgmClip.stop();
+                    titleBgmClip.start();
                     System.out.println("Play->Title");
                 }
 
@@ -63,7 +94,7 @@ public class Controller {
                 }
 
                 // アーマー付与(デバッグ用)
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
                     model.getArmor();
                     System.out.println("You got armored");
                 }
@@ -103,6 +134,12 @@ public class Controller {
                         model.breakArmor();
                         System.out.println("Armor has broken!");
                     } else {
+                        // 衝突音再生
+                        if(gameoverClip!=null){
+                            gameoverClip.setFramePosition(0);
+                            gameoverClip.start();
+                        }
+
                         model.stopGame();
                         gameTimer.stop();
                         System.out.println("You Lose...");
