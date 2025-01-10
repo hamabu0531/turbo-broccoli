@@ -41,7 +41,7 @@ public class RockPanel extends JPanel{
         repaint();
     }
 
-    public void EmergeRock(int rockPosX, int rockPosY) {
+    public void setRockPos(int rockPosX, int rockPosY) {
         this.x = rockPosX;
         this.y = rockPosY;
         repaint();
