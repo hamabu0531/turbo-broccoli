@@ -17,13 +17,10 @@ public class Model {
     private boolean isGameStarted;
     private boolean isGameOver;
     private int playerPosX;
-
-    //  使うかわからないが、一応作った変数
-    // +------------------------------------------------------------------+
-    private boolean armored;
-    // +------------------------------------------------------------------+
+    private boolean isArmored;
+    private final int WINDOW_SIZE_Y = 1000;
+    private final int PLAYER_POS_Y  = 700;
     
-
     ArrayList<Integer> arrRockPosX;
     ArrayList<Integer> arrRockPosY;
     public Model() {
@@ -33,14 +30,10 @@ public class Model {
         isTitleScene = true;
         isGameStarted = false;
         isGameOver = false;
-
-        // +------------------------------------------------------------------+
-        armored = false;
-        // +------------------------------------------------------------------+
+        isArmored = false;
 
         arrRockPosX = new ArrayList<Integer>();
         arrRockPosY = new ArrayList<Integer>();
-
 
         timer = new Timer(1000, new ActionListener(){
             @Override
@@ -58,7 +51,7 @@ public class Model {
     // +-----------+-----+------+-----+
     // | position  | -1  |  0   | 1   |
     // +-----------+-----+------+-----+
-    // | 位置       | 左  | 中央 | 右 |
+    // | 位置      | 左  | 中央 | 右  |
     // +-----------+-----+------+-----+
 
     public void moveToRight() {
@@ -84,7 +77,7 @@ public class Model {
 
     public void deleteRock() {
         for (int i=arrRockPosY.size()-1; i>=0; i--) {
-            if (arrRockPosY.get(i) > 300) {
+            if (arrRockPosY.get(i) > WINDOW_SIZE_Y) {
                 arrRockPosX.remove(i);
                 arrRockPosY.remove(i);
             }
@@ -109,7 +102,7 @@ public class Model {
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
         for (int i=0; i<arrRockPosX.size(); i++) {
-            if (arrRockPosX.get(i) == playerPosX && arrRockPosY.get(i) == 300) {
+            if (arrRockPosX.get(i) == playerPosX && arrRockPosY.get(i) == PLAYER_POS_Y) {
                 return true;
             }
         }
@@ -143,12 +136,14 @@ public class Model {
     public void goToPlayScene() {
         isTitleScene = false;
         isPlayScene = true;
+        isArmored = false;
     }
 
     public void backToTitleScene() {
         isPlayScene = false;
         isTitleScene = true;
         isGameOver = false;
+        isArmored = false;
     }
 
     public boolean isTitleScene() {
@@ -184,14 +179,18 @@ public class Model {
     //  Armor(鎧)アイテムに触れると、1回までなら岩に当たっても死なない。
     //  ただし、鎧は壊れる。複数取得不可。
     public void getArmor() {
-        armored = true;
+        if (isGameStarted && !isGameOver) {
+            isArmored = true;
+        }
     }
     
     public void breakArmor() {
-        armored = false;
+        if (isGameStarted && !isGameOver) {
+            isArmored = false;
+        }
     }
 
     public boolean hasArmor() {
-        return armored;
+        return isArmored;
     }
 }
