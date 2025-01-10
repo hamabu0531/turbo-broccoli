@@ -21,9 +21,14 @@ public class Model {
     private final int WINDOW_SIZE_Y = 1000;
     private final int PLAYER_POS_Y = 700;
     private final int ROCK_RADIUS = 50;
+    private boolean isSameLane;
+    private boolean isInsideTopContact;
+    private boolean isInsideBottomContact;
     
     ArrayList<Integer> arrRockPosX;
     ArrayList<Integer> arrRockPosY;
+    ArrayList<Integer> arrItemPosX;
+    ArrayList<Integer> arrItemPosY;
     public Model() {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
@@ -35,6 +40,8 @@ public class Model {
 
         arrRockPosX = new ArrayList<Integer>();
         arrRockPosY = new ArrayList<Integer>();
+        arrItemPosX = new ArrayList<Integer>();
+        arrItemPosY = new ArrayList<Integer>();
 
         timer = new Timer(1000, new ActionListener(){
             @Override
@@ -71,18 +78,22 @@ public class Model {
     //  岩関係
     // +------------------------------------------------------------------+
 
-    public void setRockInfo(int RockPosX, int RockPosY) {
-        arrRockPosX.add(RockPosX);  //  -1, 0, 1
-        arrRockPosY.add(RockPosY);  //  岩のy座標
+    public void setRockInfo(int rockPosX, int rockPosY) {
+        arrRockPosX.add(rockPosX);  //  -1, 0, 1
+        arrRockPosY.add(rockPosY);  //  岩のy座標
     }
 
-    public void deleteRock() {
+    public void deleteOffScreenRock() {
         for (int i=arrRockPosY.size()-1; i>=0; i--) {
             if (arrRockPosY.get(i) > WINDOW_SIZE_Y) {
                 arrRockPosX.remove(i);
                 arrRockPosY.remove(i);
             }
         }
+    }
+
+    public void deleteSpecificRock() {
+
     }
 
     public void resetRock() {
@@ -102,19 +113,71 @@ public class Model {
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
-        for (int i=0; i<arrRockPosX.size(); i++) {
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            isSameLane            = arrRockPosX.get(i) == playerPosX;
+            isInsideBottomContact = arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100;
+            isInsideTopContact    = arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100;
             //  岩とプレイヤーが同じレーン & プレイヤーと岩が少しでも重なっているならば
-            if (arrRockPosX.get(i) == playerPosX 
-            && arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100
-            && arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100 ) {
+            if (isSameLane && isInsideBottomContact && isInsideTopContact) {
                 return true;
             }
+            // if (arrRockPosX.get(i) == playerPosX 
+            // && arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100
+            // && arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100 ) {
+            //     return true;
+            // }
         }
         return false;
     }
 
     public ArrayList<Integer> getRockPosY() {
         return arrRockPosY;
+    }
+
+    // +------------------------------------------------------------------+
+    //  アイテム関係
+    // +------------------------------------------------------------------+
+
+    public void setItemInfo(int itemPosX, int itemPosY) {
+        arrItemPosX.add(itemPosX);
+        arrItemPosY.add(itemPosY);
+    }
+
+    public void handleItemCollect() {
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            if (arrRockPosX.get(i) == playerPosX
+            && arrRockPosY.get(i) >= PLAYER_POS_Y - 50
+            && arrRockPosY.get(i) <= PLAYER_POS_Y + 50) {
+                increaseScore();
+            }
+        }
+    }
+
+    public void deleteOffScreenItem() {
+        for (int i=arrItemPosY.size()-1; i>=0; i--) {
+            if (arrItemPosY.get(i) > WINDOW_SIZE_Y) {
+                arrItemPosX.remove(i);
+                arrItemPosY.remove(i);
+            }
+        }
+    }
+
+    public void deleteSpecificItem() {
+
+    }
+
+    public void resetItem() {
+        for (int i=arrItemPosY.size()-1; i>=0; i--) {
+            arrItemPosX.remove(i);
+            arrItemPosY.remove(i);
+        }
+    }
+
+    //  すべてのアイテムの座標に +1 をする (アイテムが画面下側へ移動する)
+    public void increaseItemPosY() {
+        for (int i=0; i<arrItemPosY.size(); i++) {
+            arrItemPosY.set(i, arrItemPosY.get(i) + 3);
+        }
     }
 
     // +------------------------------------------------------------------+
