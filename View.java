@@ -15,6 +15,7 @@ public class View extends JFrame {
     private PlayerPanel playerPanel;
     private RockPanel rockPanel;
     private JLayeredPane layeredPane;
+    private ScorePanel scorePanel;
 
     public View() {
 
@@ -53,6 +54,11 @@ public class View extends JFrame {
         rockPanel = new RockPanel();
         rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(rockPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
+
+        //スコアパネル
+        scorePanel = new ScorePanel();
+        scorePanel.setBounds(0,0,600,50); // スコアは600☓50のサイズに固定
+        layeredPane.add(scorePanel, JLayeredPane.DRAG_LAYER);//DRAG_LAYERによってほかのすべての要素より全面にスコアパネルが表示される。
         
         //デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
@@ -67,6 +73,10 @@ public class View extends JFrame {
 
     public PlayerPanel getPlayerPanel() {
         return playerPanel;
+    }
+
+    public ScorePanel getScorePanel() {
+        return scorePanel;
     }
 
     public JLayeredPane getJLayeredPane() {

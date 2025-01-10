@@ -25,13 +25,13 @@ public class RockPanel extends JPanel{
     }
     
     public void paintComponent(Graphics g){
-        int offsetX = 250, offsetY = 200;
+        int offsetX = 250, offsetY = -100;
         super.paintComponent(g);
         if(image!=null){
             g.drawImage(image, x*200+offsetX, y*100+offsetY, getFocusCycleRootAncestor());
         }else{
             g.setColor(Color.ORANGE);
-            g.fillOval(x*200+offsetX, (int)(y*1.35+offsetY), width, height);
+            g.fillOval(x*200+offsetX, (int)(y*1.00+offsetY), width, height);
 
         }
     }
