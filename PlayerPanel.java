@@ -17,7 +17,7 @@ public class PlayerPanel extends JPanel{
             x = 0; y = 0;
             width = 100; height = 100;
             try{
-                image = ImageIO.read(new File("URL"));
+                image = ImageIO.read(new File("bike_back1(1).png"));
             }catch(IOException e){
                 e.printStackTrace();
             }
