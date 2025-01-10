@@ -3,6 +3,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class Controller {
     private View view;
     private Timer gameTimer;
     private ArrayList<RockPanel> rocks; // ArrayListに変更
-    private int deletedRock;
+    private int deletedRock, generateCounter;
     private Clip gameoverClip, gameBgmClip, titleBgmClip;
 
     public Controller(Model model, View view) {
@@ -24,11 +25,12 @@ public class Controller {
         this.view = view;
         rocks = new ArrayList<>(); // ArrayListを初期化
         deletedRock = 0;
+        generateCounter=0;
         try{
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(Controller.class.getResource("Explosion.wav"));
             gameoverClip = AudioSystem.getClip();
             gameoverClip.open(audioIn);
-            AudioInputStream audioIn2 = AudioSystem.getAudioInputStream(Controller.class.getResource("Game BGMへのURL"));
+            AudioInputStream audioIn2 = AudioSystem.getAudioInputStream(Controller.class.getResource("usi.wav"));
             gameBgmClip = AudioSystem.getClip();
             gameBgmClip.open(audioIn2);
             AudioInputStream audioIn3 = AudioSystem.getAudioInputStream(Controller.class.getResource("Title BGMへのURL"));
@@ -79,6 +81,7 @@ public class Controller {
                 // Playシーン->Titleシーン
                 if (e.getKeyChar() == 'q' && model.isGameOver()) {
                     model.backToTitleScene();
+                    generateCounter = 0;
                     // 岩の配列リセット
                     rocks.clear();
                     model.resetRock();
@@ -118,6 +121,13 @@ public class Controller {
         gameTimer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // 岩生成(自動)
+                if(generateCounter%300==0){
+                    generateRock(new Random().nextInt(3)-1, -100);
+                }
+                generateCounter++;
+
+
                 // 岩を移動する関数
                 model.increaseRockPosY();
 
