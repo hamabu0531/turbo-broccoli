@@ -16,7 +16,7 @@ public class Controller {
     private View view;
     private Timer gameTimer;
     private ArrayList<RockPanel> rocks; // ArrayListに変更
-    private int deletedRock, generateCounter, spawnInterval;
+    private int deletedRock, generateCounter;
     private Clip gameoverClip, gameBgmClip, titleBgmClip;
 
     public Controller(Model model, View view) {
@@ -26,7 +26,6 @@ public class Controller {
         rocks = new ArrayList<>(); // ArrayListを初期化
         deletedRock = 0;
         generateCounter=0;
-        spawnInterval = 100;
         try{
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(Controller.class.getResource("Explosion.wav"));
             gameoverClip = AudioSystem.getClip();
@@ -123,16 +122,8 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 岩生成(自動)
-                if(generateCounter%spawnInterval == 0){
-                    int num1 = new Random().nextInt(3)-1;
-                    int num2 = num1;
-                    while(num1==num2){
-                        num2 = new Random().nextInt(3)-1;
-                    }
-                    generateRock(num1, -100);
-                    if(1!=new Random().nextInt(3)+1){
-                        generateRock(num2, -100);
-                    }
+                if(generateCounter%300==0){
+                    generateRock(new Random().nextInt(3)-1, -100);
                 }
                 generateCounter++;
 
