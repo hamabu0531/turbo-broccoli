@@ -48,12 +48,6 @@ public class View extends JFrame {
         playerPanel = new PlayerPanel();
         playerPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
         layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
-        
-        //岩
-        // rockPanel = new RockPanel(layeredPane);
-        rockPanel = new RockPanel();
-        rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
-        layeredPane.add(rockPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
 
         //スコアパネル
         scorePanel = new ScorePanel();
@@ -81,5 +75,12 @@ public class View extends JFrame {
 
     public JLayeredPane getJLayeredPane() {
         return layeredPane;
+    }
+
+    public void addRock(int posX, int posY){
+        rockPanel = new RockPanel();
+        rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
+        rockPanel.setRockPos(posX, posY);
+        layeredPane.add(rockPanel, JLayeredPane.PALETTE_LAYER);
     }
 }
