@@ -130,7 +130,7 @@ public class Controller {
                         num2 = new Random().nextInt(3)-1;
                     }
                     generateRock(num1, -100);
-                    if(1!=new Random().nextInt(2)+1){
+                    if(1<new Random().nextInt(5)){
                         generateRock(num2, -100);
                     }
                 }
