@@ -18,7 +18,7 @@ public class ScorePanel extends JPanel {
         add(scoreLabel);
     }
 
-    public void updateScore(int score) {
+    public void updateScore(int score) {//Controllerで呼ぶ
         scoreLabel.setText("Score: " + score);
     }
 }
