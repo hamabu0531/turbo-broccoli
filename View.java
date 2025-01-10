@@ -14,6 +14,7 @@ public class View extends JFrame {
     private LanePanel l;
     private PlayerPanel playerPanel;
     private RockPanel rockPanel;
+    private JLayeredPane layeredPane;
 
     public View() {
 
@@ -24,7 +25,7 @@ public class View extends JFrame {
         setLayout(new BorderLayout());
 
         // JLayeredPaneを使用．パネルを重ねて描画するときに使うらしい．
-        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(600, 1000));
         add(layeredPane, BorderLayout.CENTER);
 
@@ -64,7 +65,11 @@ public class View extends JFrame {
         return rockPanel;
     }
 
-        public PlayerPanel getPlayerPanel() {
+    public PlayerPanel getPlayerPanel() {
         return playerPanel;
+    }
+
+    public JLayeredPane getJLayeredPane() {
+        return layeredPane;
     }
 }
