@@ -65,44 +65,44 @@ public class Controller {
                     System.out.println("PlayerPosX = " + model.getPlayerPosX());
                 }
 
-                // Titleシーン->Playシーン
-                if (e.getKeyCode() == KeyEvent.VK_SPACE && model.isTitleScene()) {
-                    model.goToPlayScene();
-                    gameTimer.start();
-                    System.out.println("Title->Play");
+                // Titleシーン->Playシーン(デバッグ)
+                // if (e.getKeyCode() == KeyEvent.VK_SPACE && model.isTitleScene()) {
+                //     model.goToPlayScene();
+                //     gameTimer.start();
+                //     System.out.println("Title->Play");
 
-                    // ここでbgm流す
-                    if(gameBgmClip!=null){
-                        gameBgmClip.setFramePosition(0);
-                        gameBgmClip.start();
-                        titleBgmClip.stop();
-                    }
-                }
+                //     // ここでbgm流す
+                //     if(gameBgmClip!=null){
+                //         gameBgmClip.setFramePosition(0);
+                //         gameBgmClip.start();
+                //         titleBgmClip.stop();
+                //     }
+                // }
 
-                // Playシーン->Titleシーン
-                if (e.getKeyChar() == 'q' && model.isGameOver()) {
-                    model.backToTitleScene();
-                    generateCounter = 0;
-                    // 岩の配列リセット
-                    rocks.clear();
-                    model.resetRock();
-                    if(gameBgmClip!=null){
-                        gameBgmClip.stop();
-                    }
-                    if(titleBgmClip!=null){
-                        titleBgmClip.start();
-                    }
-                    System.out.println("Play->Title");
-                }
+                // Playシーン->Titleシーン(デバッグ)
+                // if (e.getKeyChar() == 'q' && model.isGameOver()) {
+                //     model.backToTitleScene();
+                //     generateCounter = 0;
+                //     // 岩の配列リセット
+                //     rocks.clear();
+                //     model.resetRock();
+                //     if(gameBgmClip!=null){
+                //         gameBgmClip.stop();
+                //     }
+                //     if(titleBgmClip!=null){
+                //         titleBgmClip.start();
+                //     }
+                //     System.out.println("Play->Title");
+                // }
 
                 // 岩生成(デバッグ用)
-                if (e.getKeyCode() == KeyEvent.VK_1) {
-                    generateRock(-1, -100);
-                } else if (e.getKeyCode() == KeyEvent.VK_2) {
-                    generateRock(0, -100);
-                } else if (e.getKeyCode() == KeyEvent.VK_3) {
-                    generateRock(1, -100);
-                }
+                // if (e.getKeyCode() == KeyEvent.VK_1) {
+                //     generateRock(-1, -100);
+                // } else if (e.getKeyCode() == KeyEvent.VK_2) {
+                //     generateRock(0, -100);
+                // } else if (e.getKeyCode() == KeyEvent.VK_3) {
+                //     generateRock(1, -100);
+                // }
 
                 // アーマー付与(デバッグ用)
                 if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
@@ -119,6 +119,70 @@ public class Controller {
             }
         });
 
+        // 各ボタンのListener
+        view.getStartButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.goToPlayScene();
+                generateTimer();
+                view.startGame();
+                gameTimer.start();
+                System.out.println("Title->Play");
+
+                // ここでbgm流す
+                if(gameBgmClip!=null){
+                    gameBgmClip.setFramePosition(0);
+                    gameBgmClip.start();
+                    titleBgmClip.stop();
+                }
+            }
+        });
+
+        view.getHomeButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.backToTitleScene();
+                generateCounter = 0;
+                deletedRock = 0;
+                // 岩の配列リセット
+                rocks.clear();
+                model.resetRock();
+                view.backToTitle();
+                if(gameBgmClip!=null){
+                    gameBgmClip.stop();
+                }
+                if(titleBgmClip!=null){
+                    titleBgmClip.start();
+                }
+                System.out.println("Play->Title");
+            }
+        });
+
+        view.getRetryButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.backToTitleScene();
+                model.goToPlayScene();
+                view.retryGame();
+                rocks.clear();
+                model.resetRock();
+                generateCounter = 0;
+                deletedRock = 0;
+                generateTimer();
+                gameTimer.start();
+                System.out.println("Retry");
+            }
+        });
+    }
+
+    // 岩を生成する関数
+    private void generateRock(int posX, int posY) {
+        model.setRockInfo(posX, posY);
+        RockPanel newRock = view.addRock(posX, posY);
+        rocks.add(newRock); // ArrayListに追加
+    }
+
+    private void generateTimer(){
         // 一定時間ごとに岩を移動
         gameTimer = new Timer(10, new ActionListener() {
             @Override
@@ -176,12 +240,5 @@ public class Controller {
                 }
             }
         });
-    }
-
-    // 岩を生成する関数
-    private void generateRock(int posX, int posY) {
-        model.setRockInfo(posX, posY);
-        RockPanel newRock = view.addRock(posX, posY);
-        rocks.add(newRock); // ArrayListに追加
     }
 }

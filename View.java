@@ -19,6 +19,7 @@ public class View extends JFrame {
     private JPanel homePanel;
     private JPanel gameOverPanel;
     private TateLifePanel tateLifePanel;
+    public JButton startButton, retryButton, homeButton;
 
     public View() {
 
@@ -98,14 +99,16 @@ public class View extends JFrame {
         titleLabel.setBounds(0, 200, 600, 100);
         panel.add(titleLabel);
 
-        JButton startButton = new JButton("Start Game");
+        startButton = new JButton("Start Game");
         startButton.setBounds(200, 400, 200, 50);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startGame();  // ゲーム開始処理
-            }
-        });
+
+        // ActionListenerはControllerで一括管理(はまぶー)
+        // startButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         startGame();  // ゲーム開始処理
+        //     }
+        // });
         panel.add(startButton);
 
         return panel;
@@ -122,7 +125,7 @@ public class View extends JFrame {
         gameOverLabel.setBounds(0, 200, 600, 100);
         panel.add(gameOverLabel);
 
-        JButton retryButton = new JButton("Retry");
+        retryButton = new JButton("Retry");
         retryButton.setBounds(200, 350, 200, 50);
         retryButton.addActionListener(new ActionListener() {
             @Override
@@ -132,16 +135,16 @@ public class View extends JFrame {
         });
         panel.add(retryButton);
 
-        JButton homeButton = new JButton("End Game");
+        homeButton = new JButton("End Game");
         homeButton.setBounds(200, 450, 200, 50);
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setHomeScreenVisible(true);
-                setGameOverScreenVisible(false);
-                initializePanel();
-            }
-        });
+
+        // ActionListenerはControllerで一括管理(はまぶー)
+        // homeButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         backToTitle();
+        //     }
+        // });
         panel.add(homeButton);
 
         return panel;
@@ -155,7 +158,15 @@ public class View extends JFrame {
 
     // ゲームリトライ処理
     public void retryGame() {
+        initializePanel();
+        initializeRock();
         setHomeScreenVisible(false);
+        setGameOverScreenVisible(false);
+    }
+
+    // タイトルへ戻る処理
+    public void backToTitle() {
+        setHomeScreenVisible(true);
         setGameOverScreenVisible(false);
         initializePanel();
         initializeRock();
@@ -195,6 +206,18 @@ public class View extends JFrame {
         return layeredPane;
     }
 
+    public JButton getStartButton(){
+        return startButton;
+    }
+
+    public JButton getRetryButton(){
+        return retryButton;
+    }
+
+    public JButton getHomeButton(){
+        return homeButton;
+    }
+
     public RockPanel addRock(int posX, int posY){
         rockPanel = new RockPanel();
         rockPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
@@ -226,7 +249,17 @@ public class View extends JFrame {
         layeredPane.repaint();
     }
 
-    public void initializeRock(){
-        layeredPane.remove(rockPanel);//一番後に生成したrockしか消えない．
+    public void initializeRock() {
+        // 現在のレイヤードペイン内の全コンポーネントを取得
+        Component[] components = layeredPane.getComponents();
+        // コンポーネントを逆順にチェックして削除（安全に削除するため）
+        for (int i = components.length - 1; i >= 0; i--) {
+            if (components[i] instanceof RockPanel) {
+                layeredPane.remove(components[i]);
+            }
+        }
+        // レイヤードペインを再描画して変更を反映
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
 }
