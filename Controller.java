@@ -107,6 +107,7 @@ public class Controller {
                 // アーマー付与(デバッグ用)
                 if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
                     model.getArmor();
+                    view.getTateLifePanel().showTateLife();//盾所持表示
                     System.out.println("You got armored");
                 }
             }
@@ -158,6 +159,7 @@ public class Controller {
                 if (model.checkCollision()) {
                     if (model.hasArmor()) {
                         model.breakArmor();
+                        view.getTateLifePanel().hideTateLife();//盾表示排除
                         System.out.println("Armor has broken!");
                     } else {
                         // 衝突音再生
@@ -167,6 +169,7 @@ public class Controller {
                         }
 
                         model.stopGame();
+                        view.setGameOverScreenVisible(true);//ゲームオーバー表示
                         gameTimer.stop();
                         System.out.println("You Lose...");
                     }

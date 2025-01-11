@@ -18,6 +18,7 @@ public class View extends JFrame {
     private ScorePanel scorePanel;
     private JPanel homePanel;
     private JPanel gameOverPanel;
+    private TateLifePanel tateLifePanel;
 
     public View() {
 
@@ -68,13 +69,14 @@ public class View extends JFrame {
         layeredPane.add(scorePanel, JLayeredPane.DRAG_LAYER);//DRAG_LAYERによってほかのすべての要素より全面にスコアパネルが表示される。
         
         //盾残機
-        scorePanel = new ScorePanel();
-        scorePanel.setBounds(0,0,50,50); // スコアは600☓50のサイズに固定
-        layeredPane.add(scorePanel, JLayeredPane.DRAG_LAYER);
+        tateLifePanel = new TateLifePanel();
+        tateLifePanel.setBounds(0,0,100,100); // スコアは50☓50のサイズに固定
+        layeredPane.add(tateLifePanel, JLayeredPane.DRAG_LAYER);
 
         // 初期表示はホーム画面
         setHomeScreenVisible(true);
         setGameOverScreenVisible(false);
+        tateLifePanel.hideTateLife();
 
         //デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
@@ -83,15 +85,17 @@ public class View extends JFrame {
         setVisible(true);
     }
 
+    ////////////////////////////////////////////////////////////////
+
     // ホーム画面作成
-    private JPanel createHomeScreen() {
+    public JPanel createHomeScreen() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setOpaque(false); // 背景透過
 
-        JLabel titleLabel = new JLabel("Game Title", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        titleLabel.setBounds(150, 200, 300, 100);
+        JLabel titleLabel = new JLabel("Ateef Rush", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 70));
+        titleLabel.setBounds(0, 200, 600, 100);
         panel.add(titleLabel);
 
         JButton startButton = new JButton("Start Game");
@@ -108,18 +112,18 @@ public class View extends JFrame {
     }
 
     // ゲームオーバー画面作成
-    private JPanel createGameOverScreen() {
+    public JPanel createGameOverScreen() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setOpaque(false);
 
         JLabel gameOverLabel = new JLabel("Game Over", JLabel.CENTER);
-        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        gameOverLabel.setBounds(150, 200, 300, 100);
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 70));
+        gameOverLabel.setBounds(0, 200, 600, 100);
         panel.add(gameOverLabel);
 
         JButton retryButton = new JButton("Retry");
-        retryButton.setBounds(200, 400, 200, 50);
+        retryButton.setBounds(200, 350, 200, 50);
         retryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,33 +132,53 @@ public class View extends JFrame {
         });
         panel.add(retryButton);
 
+        JButton homeButton = new JButton("End Game");
+        homeButton.setBounds(200, 450, 200, 50);
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setHomeScreenVisible(true);
+                setGameOverScreenVisible(false);
+                initializePanel();
+            }
+        });
+        panel.add(homeButton);
+
         return panel;
     }
 
     // ゲーム開始処理
-    private void startGame() {
+    public void startGame() {
         setHomeScreenVisible(false);  // ホーム画面非表示
         setGameOverScreenVisible(false);  // ゲームオーバー画面非表示
-        // ゲーム開始の処理を書く
     }
 
     // ゲームリトライ処理
-    private void retryGame() {
+    public void retryGame() {
         setHomeScreenVisible(false);
         setGameOverScreenVisible(false);
-        // ゲームをリセットして開始
+        initializePanel();
+        initializeRock();
     }
 
     // ホーム画面の表示・非表示
-    private void setHomeScreenVisible(boolean visible) {
+    public void setHomeScreenVisible(boolean visible) {
         homePanel.setVisible(visible);
     }
 
     // ゲームオーバー画面の表示・非表示
-    private void setGameOverScreenVisible(boolean visible) {
+    public void setGameOverScreenVisible(boolean visible) {
+        layeredPane.add(gameOverPanel, JLayeredPane.PALETTE_LAYER); // 最前面のレイヤー
         gameOverPanel.setVisible(visible);
     }
-    
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    public TateLifePanel getTateLifePanel() {
+        return tateLifePanel;
+    }
+
     public RockPanel getRockPanel() {
         return rockPanel;
     }
@@ -179,5 +203,30 @@ public class View extends JFrame {
         return rockPanel;
     }
 
+///////////////////////////////////////////////////////////////////////////
 
+    public void initializePanel() {
+        // rockPanel, TateLifePanel, PlayerPanel を初期化
+        tateLifePanel.hideTateLife();
+        layeredPane.remove(playerPanel);
+        layeredPane.remove(scorePanel);
+
+        // これらのパネルを再初期化
+
+        playerPanel = new PlayerPanel();
+        playerPanel.setBounds(0, 0, 600, 1000); // サイズを調整
+        layeredPane.add(playerPanel, JLayeredPane.PALETTE_LAYER); // プレイヤーレイヤー
+
+        scorePanel = new ScorePanel();
+        scorePanel.setBounds(0,0,600,50); // スコアは600☓50のサイズに固定
+        layeredPane.add(scorePanel, JLayeredPane.DRAG_LAYER);//DRAG_LAYERによってほかのすべての要素より全面にスコアパネルが表示される。
+
+        // 再描画
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+
+    public void initializeRock(){
+        layeredPane.remove(rockPanel);//一番後に生成したrockしか消えない．
+    }
 }
