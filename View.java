@@ -20,6 +20,8 @@ public class View extends JFrame {
     private JPanel gameOverPanel;
     private TateLifePanel tateLifePanel;
     public JButton startButton, retryButton, homeButton;
+    public TatePanel tatePanel;
+    public ItemPanel itemPanel;
 
     public View() {
 
@@ -94,7 +96,7 @@ public class View extends JFrame {
         panel.setLayout(null);
         panel.setOpaque(false); // 背景透過
 
-        JLabel titleLabel = new JLabel("Ateef Rush", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("A Thief Rush", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 70));
         titleLabel.setBounds(0, 200, 600, 100);
         panel.add(titleLabel);
@@ -158,8 +160,7 @@ public class View extends JFrame {
 
     // ゲームリトライ処理
     public void retryGame() {
-        initializePanel();
-        initializeRock();
+        initialize();
         setHomeScreenVisible(false);
         setGameOverScreenVisible(false);
     }
@@ -168,8 +169,7 @@ public class View extends JFrame {
     public void backToTitle() {
         setHomeScreenVisible(true);
         setGameOverScreenVisible(false);
-        initializePanel();
-        initializeRock();
+        initialize();
     }
 
     // ホーム画面の表示・非表示
@@ -179,7 +179,7 @@ public class View extends JFrame {
 
     // ゲームオーバー画面の表示・非表示
     public void setGameOverScreenVisible(boolean visible) {
-        layeredPane.add(gameOverPanel, JLayeredPane.PALETTE_LAYER); // 最前面のレイヤー
+        layeredPane.add(gameOverPanel, JLayeredPane.DRAG_LAYER); // 最前面のレイヤー
         gameOverPanel.setVisible(visible);
     }
 
@@ -200,6 +200,14 @@ public class View extends JFrame {
 
     public ScorePanel getScorePanel() {
         return scorePanel;
+    }
+
+    public TatePanel getTatePanel() {
+        return tatePanel;
+    }
+
+    public ItemPanel getItemPanel() {
+        return itemPanel;
     }
 
     public JLayeredPane getJLayeredPane() {
@@ -229,7 +237,7 @@ public class View extends JFrame {
 ///////////////////////////////////////////////////////////////////////////
 
     public void initializePanel() {
-        // rockPanel, TateLifePanel, PlayerPanel を初期化
+        //TateLifePanel, PlayerPanel ScorePanelを初期化
         tateLifePanel.hideTateLife();
         layeredPane.remove(playerPanel);
         layeredPane.remove(scorePanel);
@@ -261,5 +269,40 @@ public class View extends JFrame {
         // レイヤードペインを再描画して変更を反映
         layeredPane.revalidate();
         layeredPane.repaint();
+    }
+
+    public void initializeItem() {
+        // 現在のレイヤードペイン内の全コンポーネントを取得
+        Component[] components = layeredPane.getComponents();
+        // コンポーネントを逆順にチェックして削除（安全に削除するため）
+        for (int i = components.length - 1; i >= 0; i--) {
+            if (components[i] instanceof ItemPanel) {
+                layeredPane.remove(components[i]);
+            }
+        }
+        // レイヤードペインを再描画して変更を反映
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+
+    public void initializeTate() {
+        // 現在のレイヤードペイン内の全コンポーネントを取得
+        Component[] components = layeredPane.getComponents();
+        // コンポーネントを逆順にチェックして削除（安全に削除するため）
+        for (int i = components.length - 1; i >= 0; i--) {
+            if (components[i] instanceof TatePanel) {
+                layeredPane.remove(components[i]);
+            }
+        }
+        // レイヤードペインを再描画して変更を反映
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+
+    public void initialize() {//上記の初期化をまとめたもの
+        initializePanel();
+        initializeRock();
+        initializeItem();
+        initializeTate();
     }
 }
