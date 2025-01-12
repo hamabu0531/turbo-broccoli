@@ -17,22 +17,29 @@ public class Model {
     private boolean isGameStarted;
     private boolean isGameOver;
     private int playerPosX;
+    private int speed;
     private boolean isArmored;
     private final int WINDOW_SIZE_Y = 1000;
     private final int PLAYER_POS_Y = 700;
     private final int ROCK_RADIUS = 50;
-    private boolean isSameLane;
-    private boolean isInsideTopContact;
-    private boolean isInsideBottomContact;
+    private boolean isRockSameLane;
+    private boolean isRockInsideTopContact;
+    private boolean isRockInsideBottomContact;
+    private boolean isItemSameLane;
+    private boolean isItemInsideTopContact;
+    private boolean isItemInsideBottomContact;
     
     ArrayList<Integer> arrRockPosX;
     ArrayList<Integer> arrRockPosY;
     ArrayList<Integer> arrItemPosX;
     ArrayList<Integer> arrItemPosY;
+    ArrayList<Integer> arrArmorPosX;
+    ArrayList<Integer> arrArmorPosY;
     public Model() {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
         remainingTime = 100;
+        speed = 3;
         isTitleScene = true;
         isGameStarted = false;
         isGameOver = false;
@@ -42,6 +49,8 @@ public class Model {
         arrRockPosY = new ArrayList<Integer>();
         arrItemPosX = new ArrayList<Integer>();
         arrItemPosY = new ArrayList<Integer>();
+        arrArmorPosX = new ArrayList<Integer>();
+        arrArmorPosY = new ArrayList<Integer>();
 
         timer = new Timer(1000, new ActionListener(){
             @Override
@@ -59,7 +68,7 @@ public class Model {
     // +-----------+-----+------+-----+
     // | position  | -1  |  0   | 1   |
     // +-----------+-----+------+-----+
-    // | 位置      | 左  | 中央 | 右  |
+    // | 位置       | 左  | 中央  | 右  |
     // +-----------+-----+------+-----+
 
     public void moveToRight() {
@@ -92,10 +101,13 @@ public class Model {
         }
     }
 
-    public void deleteSpecificRock() {
-
+    //  不要かも
+    public void deleteSpecificRock(int i) {
+        arrRockPosX.remove(i);
+        arrRockPosY.remove(i);
     }
 
+    //  岩を全削除
     public void resetRock() {
         for (int i=arrRockPosY.size()-1; i>=0; i--) {
             arrRockPosX.remove(i);
@@ -103,10 +115,10 @@ public class Model {
         }
     }
 
-    //  すべての岩の座標に +1 をする (岩が画面下側へ移動する)
+    //  すべての岩の座標に +3 をする (岩が画面下側へ移動する)
     public void increaseRockPosY() {
         for (int i=0; i<arrRockPosY.size(); i++) {
-            arrRockPosY.set(i, arrRockPosY.get(i) + 3);
+            arrRockPosY.set(i, arrRockPosY.get(i) + speed);
         }
     }
 
@@ -114,18 +126,13 @@ public class Model {
     //  1つでも一致するなら衝突とみなす (trueを返す)
     public boolean checkCollision() {
         for (int i=0; i<arrRockPosY.size(); i++) {
-            isSameLane            = arrRockPosX.get(i) == playerPosX;
-            isInsideBottomContact = arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100;
-            isInsideTopContact    = arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100;
+            isRockSameLane            = arrRockPosX.get(i) == playerPosX;
+            isRockInsideBottomContact = arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100;
+            isRockInsideTopContact    = arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100;
             //  岩とプレイヤーが同じレーン & プレイヤーと岩が少しでも重なっているならば
-            if (isSameLane && isInsideBottomContact && isInsideTopContact) {
+            if (isRockSameLane && isRockInsideBottomContact && isRockInsideTopContact) {
                 return true;
             }
-            // if (arrRockPosX.get(i) == playerPosX 
-            // && arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100
-            // && arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100 ) {
-            //     return true;
-            // }
         }
         return false;
     }
@@ -143,11 +150,13 @@ public class Model {
         arrItemPosY.add(itemPosY);
     }
 
-    public void handleItemCollect() {
+    //  アイテムを取得するとスコア増加
+    public void handleItemCollecting() {
         for (int i=0; i<arrRockPosY.size(); i++) {
-            if (arrRockPosX.get(i) == playerPosX
-            && arrRockPosY.get(i) >= PLAYER_POS_Y - 50
-            && arrRockPosY.get(i) <= PLAYER_POS_Y + 50) {
+            isItemSameLane            = arrItemPosX.get(i) == playerPosX;
+            isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
+            isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
+            if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact) {
                 increaseScore();
             }
         }
@@ -162,10 +171,13 @@ public class Model {
         }
     }
 
-    public void deleteSpecificItem() {
-
+    //  不要かも?
+    public void deleteSpecificItem(int i) {
+        arrItemPosX.remove(i);
+        arrItemPosY.remove(i);
     }
 
+    //  アイテムを全削除
     public void resetItem() {
         for (int i=arrItemPosY.size()-1; i>=0; i--) {
             arrItemPosX.remove(i);
@@ -173,10 +185,10 @@ public class Model {
         }
     }
 
-    //  すべてのアイテムの座標に +1 をする (アイテムが画面下側へ移動する)
+    //  すべてのアイテムの座標に +3 をする (アイテムが画面下側へ移動する)
     public void increaseItemPosY() {
         for (int i=0; i<arrItemPosY.size(); i++) {
-            arrItemPosY.set(i, arrItemPosY.get(i) + 3);
+            arrItemPosY.set(i, arrItemPosY.get(i) + speed);
         }
     }
 
@@ -194,6 +206,11 @@ public class Model {
 
     public int getRemainingTime() {
         return remainingTime;
+    }
+
+    //  岩やアイテムの速度変更
+    public void changeSpeed(int speed) {
+        this.speed = speed;
     }
 
     // +------------------------------------------------------------------+
@@ -240,11 +257,25 @@ public class Model {
     }
 
     // +------------------------------------------------------------------+
-    //  使うかわからないが、一応作った関数
+    //  鎧関係
     // +------------------------------------------------------------------+
 
     //  Armor(鎧)アイテムに触れると、1回までなら岩に当たっても死なない。
-    //  ただし、鎧は壊れる。複数取得不可。
+    //  その後、鎧は壊れる。複数取得不可。
+
+    public void setArmorInfo(int armorPosX, int armorPosY) {
+        arrArmorPosX.add(armorPosX);
+        arrArmorPosY.add(armorPosY);
+    }
+
+    //  鎧を全削除
+    public void resetArmor() {
+        for (int i=arrArmorPosY.size()-1; i>=0; i--) {
+            arrArmorPosX.remove(i);
+            arrArmorPosY.remove(i);
+        }
+    }
+
     public void getArmor() {
         if (isGameStarted && !isGameOver) {
             isArmored = true;
