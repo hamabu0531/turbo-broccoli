@@ -6,12 +6,12 @@ import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 import java.awt.event.*;
 
-public class TateLifePanel extends JPanel {
+public class ShieldLifePanel extends JPanel {
     Image image;
 
-    public TateLifePanel() {
+    public ShieldLifePanel() {
         try{
-            image = ImageIO.read(new File("tatemini.png"));
+            image = ImageIO.read(new File("shieldmini.png"));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -22,11 +22,11 @@ public class TateLifePanel extends JPanel {
         g.drawImage(image, 0, 0, getFocusCycleRootAncestor()); // 画像を表示
     }
 
-    public void showTateLife() {
+    public void showShieldLife() {
         setVisible(true);
     }
 
-    public void hideTateLife() {
+    public void hideShieldLife() {
         setVisible(false);
     }
 }
