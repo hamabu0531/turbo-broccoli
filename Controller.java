@@ -8,6 +8,8 @@ import java.util.Random;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
+// Cはユーザー入力を処理する(Listener関係)
+// Cは、Mの更新をし、Vにイベントを伝える
 public class Controller {
     private Model model;
     private View view;
@@ -16,6 +18,7 @@ public class Controller {
     private Clip gameoverClip, gameBgmClip, titleBgmClip;
 
     public Controller(Model model, View view) {
+        // 初期設定
         this.model = model;
         this.view = view;
         rocks = new ArrayList<>();
@@ -49,17 +52,59 @@ public class Controller {
         view.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
+                // Playerの移動
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT && model.isPlayScene() && !model.isGameOver()) {
                     model.moveToRight();
                     view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
                 } else if (e.getKeyCode() == KeyEvent.VK_LEFT && model.isPlayScene() && !model.isGameOver()) {
                     model.moveToLeft();
                     view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
+                    // ここのデバッグ関数は削除
                 }
 
+                // Titleシーン->Playシーン(デバッグ)
+                // if (e.getKeyCode() == KeyEvent.VK_SPACE && model.isTitleScene()) {
+                //     model.goToPlayScene();
+                //     gameTimer.start();
+                //     System.out.println("Title->Play");
+
+                //     // ここでbgm流す
+                //     if(gameBgmClip!=null){
+                //         gameBgmClip.setFramePosition(0);
+                //         gameBgmClip.start();
+                //         titleBgmClip.stop();
+                //     }
+                // }
+
+                // Playシーン->Titleシーン(デバッグ)
+                // if (e.getKeyChar() == 'q' && model.isGameOver()) {
+                //     model.backToTitleScene();
+                //     generateCounter = 0;
+                //     // 岩の配列リセット
+                //     rocks.clear();
+                //     model.resetRock();
+                //     if(gameBgmClip!=null){
+                //         gameBgmClip.stop();
+                //     }
+                //     if(titleBgmClip!=null){
+                //         titleBgmClip.start();
+                //     }
+                //     System.out.println("Play->Title");
+                // }
+
+                // 岩生成(デバッグ用)
+                // if (e.getKeyCode() == KeyEvent.VK_1) {
+                //     generateRock(-1, -100);
+                // } else if (e.getKeyCode() == KeyEvent.VK_2) {
+                //     generateRock(0, -100);
+                // } else if (e.getKeyCode() == KeyEvent.VK_3) {
+                //     generateRock(1, -100);
+                // }
+
+                // アーマー付与(デバッグ用)
                 if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
                     model.getArmor();
-                    view.getShieldLifePanel().showShieldLife();
+                    view.getShieldLifePanel().showShieldLife(); // 盾所持表示
                     System.out.println("You got armored");
                 }
             }
@@ -69,6 +114,7 @@ public class Controller {
             public void keyTyped(KeyEvent e) {}
         });
 
+        // 各ボタンのLietener
         view.getStartButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,7 +163,7 @@ public class Controller {
             }
         });
 
-        // フレーム基準でゲームロジックを更新するスレッド
+        // Timer基準->フレーム基準
         new Thread(() -> {
             final int frameRate = 120; // 1秒間のフレーム数(増やしすぎると重くなる?)
             final long frameTime = 1000 / frameRate; // 1フレームにかかる時間(ms)
