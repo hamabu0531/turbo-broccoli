@@ -7,17 +7,17 @@ import javax.swing.border.LineBorder;
 import java.awt.event.*;
 
 /// アイテムクラス。得るとスコアが上がる的な。
-public class TatePanel extends JPanel{
+public class ShieldPanel extends JPanel{
     // メンバ変数
     int x, y, width, height; // x=-1, 0, 1で位置決定
     Image image;
     
     // コンストラクタ
-    public TatePanel(){
+    public ShieldPanel(){
         x = 0; y = 0;
         width = 100; height = 100;
         try{
-            image = ImageIO.read(new File("tate(1).png"));
+            image = ImageIO.read(new File("shield(1).png"));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -36,14 +36,14 @@ public class TatePanel extends JPanel{
         }
     }
 
-    public void updateTatePos(int tatePosY) {
-        this.y = tatePosY;
+    public void updateShieldPos(int shieldPosY) {
+        this.y = shieldPosY;
         repaint();
     }
 
-    public void setTatePos(int tatePosX, int tatePosY) {
-        this.x = tatePosX;
-        this.y = tatePosY;
+    public void setShieldPos(int shieldPosX, int shieldPosY) {
+        this.x = shieldPosX;
+        this.y = shieldPosY;
         repaint();
     }
 }

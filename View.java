@@ -18,9 +18,9 @@ public class View extends JFrame {
     private ScorePanel scorePanel;
     private JPanel homePanel;
     private JPanel gameOverPanel;
-    private TateLifePanel tateLifePanel;
+    private ShieldLifePanel shieldLifePanel;
     public JButton startButton, retryButton, homeButton;
-    public TatePanel tatePanel;
+    public ShieldPanel shieldPanel;
     public ItemPanel itemPanel;
 
     public View() {
@@ -72,14 +72,14 @@ public class View extends JFrame {
         layeredPane.add(scorePanel, JLayeredPane.DRAG_LAYER);//DRAG_LAYERによってほかのすべての要素より全面にスコアパネルが表示される。
         
         //盾残機
-        tateLifePanel = new TateLifePanel();
-        tateLifePanel.setBounds(0,0,100,100); // スコアは50☓50のサイズに固定
-        layeredPane.add(tateLifePanel, JLayeredPane.DRAG_LAYER);
+        shieldLifePanel = new ShieldLifePanel();
+        shieldLifePanel.setBounds(0,0,100,100); // スコアは50☓50のサイズに固定
+        layeredPane.add(shieldLifePanel, JLayeredPane.DRAG_LAYER);
 
         // 初期表示はホーム画面
         setHomeScreenVisible(true);
         setGameOverScreenVisible(false);
-        tateLifePanel.hideTateLife();
+        shieldLifePanel.hideShieldLife();
 
         //デフォルトでwindow自体をfocusする(キー入力のため)
         this.setFocusable(true);
@@ -186,8 +186,8 @@ public class View extends JFrame {
 
 
     ///////////////////////////////////////////////////////////////////
-    public TateLifePanel getTateLifePanel() {
-        return tateLifePanel;
+    public ShieldLifePanel getShieldLifePanel() {
+        return shieldLifePanel;
     }
 
     public RockPanel getRockPanel() {
@@ -202,8 +202,8 @@ public class View extends JFrame {
         return scorePanel;
     }
 
-    public TatePanel getTatePanel() {
-        return tatePanel;
+    public ShieldPanel getShieldPanel() {
+        return shieldPanel;
     }
 
     public ItemPanel getItemPanel() {
@@ -237,8 +237,8 @@ public class View extends JFrame {
 ///////////////////////////////////////////////////////////////////////////
 
     public void initializePanel() {
-        //TateLifePanel, PlayerPanel ScorePanelを初期化
-        tateLifePanel.hideTateLife();
+        //ShieldLifePanel, PlayerPanel ScorePanelを初期化
+        shieldLifePanel.hideShieldLife();
         layeredPane.remove(playerPanel);
         layeredPane.remove(scorePanel);
 
@@ -285,12 +285,12 @@ public class View extends JFrame {
         layeredPane.repaint();
     }
 
-    public void initializeTate() {
+    public void initializeShield() {
         // 現在のレイヤードペイン内の全コンポーネントを取得
         Component[] components = layeredPane.getComponents();
         // コンポーネントを逆順にチェックして削除（安全に削除するため）
         for (int i = components.length - 1; i >= 0; i--) {
-            if (components[i] instanceof TatePanel) {
+            if (components[i] instanceof ShieldPanel) {
                 layeredPane.remove(components[i]);
             }
         }
@@ -303,6 +303,6 @@ public class View extends JFrame {
         initializePanel();
         initializeRock();
         initializeItem();
-        initializeTate();
+        initializeShield();
     }
 }
