@@ -159,15 +159,16 @@ public class Model {
     }
 
     //  アイテムを取得するとスコア増加
-    public void handleItemCollecting() {
+    public boolean handleItemCollecting() {
         for (int i=0; i<arrRockPosY.size(); i++) {
             isItemSameLane            = arrItemPosX.get(i) == playerPosX;
             isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
             isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
             if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact) {
-                increaseScore();    //  Controller側で呼び出す方法に変更してもよい
+                return true;
             }
         }
+        return false;
     }
 
     public void deleteOffScreenItem() {
@@ -281,15 +282,16 @@ public class Model {
     }
 
     //  アイテムを取得するとスコア増加
-    public void handleArmorCollecting() {
+    public boolean handleArmorCollecting() {
         for (int i=0; i<arrRockPosY.size(); i++) {
             isArmorSameLane            = arrArmorPosX.get(i) == playerPosX;
             isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y - 50;
             isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y + 50;
             if (isArmorSameLane && isArmorInsideTopContact && isArmorInsideTopContact) {
-                getArmor();    //  Controller側で呼び出す方法に変更してもよい
+                return true;
             }
         }
+        return false;
     }
 
     public void deleteOffScreenArmor() {
