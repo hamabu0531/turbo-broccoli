@@ -26,7 +26,7 @@ public class View extends JFrame {
     public View() {
 
         //フレーム設定
-        setTitle("MVC Game Example");
+        setTitle("A Thief Rush");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 1000);
         setLayout(new BorderLayout());
