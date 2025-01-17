@@ -291,16 +291,16 @@ public class Model {
     }
 
     //  アイテムを取得するとスコア増加
-    public boolean handleArmorCollecting() {
+    public int handleArmorCollecting() {
         for (int i=0; i<arrArmorPosY.size(); i++) {
             isArmorSameLane            = arrArmorPosX.get(i) == playerPosX;
             isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y + 100;
             isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y - 100;
             if (isArmorSameLane && isArmorInsideTopContact && isArmorInsideBottomContact) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     public void deleteOffScreenArmor() {
