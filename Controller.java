@@ -124,7 +124,6 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.goToPlayScene();
-                model.setPlayerPositionZero();
                 view.startGame();
                 System.out.println("Title->Play");
 
@@ -140,6 +139,8 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.backToTitleScene();
+                model.resetScore();
+                model.setPlayerPositionZero();
                 generateCounter = 50;
                 deletedRock = 0;
                 rocks.clear();
@@ -162,6 +163,7 @@ public class Controller {
                 generateCounter = 50;
                 deletedRock = 0;
                 model.setPlayerPositionZero();
+                model.resetScore();
                 rocks.clear();
                 model.resetRock();
                 model.goToPlayScene();
@@ -207,7 +209,7 @@ public class Controller {
                     // 岩移動と削除
                     model.increaseRockPosY();
                     for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
-                        if (model.getRockPosY().get(i) > 1200) {
+                        if (model.getRockPosY().get(i) > 1100) {
                             deletedRock++;
                         }
                     }
@@ -216,7 +218,7 @@ public class Controller {
                     // アイテム移動と削除
                     model.increaseItemPosY();
                     for (int i = deletedItem; i < model.getItemPosY().size(); i++) {
-                        if (model.getItemPosY().get(i) > 1200) {
+                        if (model.getItemPosY().get(i) > 1100) {
                             deletedItem++;
                         }
                     }
@@ -251,9 +253,12 @@ public class Controller {
                     }
 
                     // アイテム取得判定
-                    // if(model.handleItemCollecting()){
-                        
-                    // }
+                    if(model.handleItemCollecting()){
+                        // スコアを増加
+                        model.increaseScore();
+                        view.getScorePanel().updateScore(model.getScore());
+                        items.get(deletedItem).hideItem();
+                    }
                 }
 
                 long elapsedTime = System.currentTimeMillis() - startTime;
