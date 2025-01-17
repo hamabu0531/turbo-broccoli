@@ -122,7 +122,7 @@ public class View extends JFrame {
         panel.setLayout(null);
         panel.setOpaque(false);
 
-        JLabel gameOverLabel = new JLabel("Game Over", JLabel.CENTER);
+        JLabel gameOverLabel = new JLabel("You Lose...", JLabel.CENTER);
         gameOverLabel.setFont(new Font("Arial", Font.BOLD, 70));
         gameOverLabel.setBounds(0, 200, 600, 100);
         panel.add(gameOverLabel);
@@ -232,6 +232,22 @@ public class View extends JFrame {
         rockPanel.setRockPos(posX, posY);
         layeredPane.add(rockPanel, JLayeredPane.PALETTE_LAYER);
         return rockPanel;
+    }
+
+    public ItemPanel addItem(int posX, int posY){
+        itemPanel = new ItemPanel();
+        itemPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
+        itemPanel.setItemPos(posX, posY);
+        layeredPane.add(itemPanel, JLayeredPane.PALETTE_LAYER);
+        return itemPanel;
+    }
+
+    public ShieldPanel addShield(int posX, int posY){
+        shieldPanel = new ShieldPanel();
+        shieldPanel.setBounds(0, 0, 600, 1000); // フルサイズに調整
+        shieldPanel.setShieldPos(posX, posY);
+        layeredPane.add(shieldPanel, JLayeredPane.PALETTE_LAYER);
+        return shieldPanel;
     }
 
 ///////////////////////////////////////////////////////////////////////////
