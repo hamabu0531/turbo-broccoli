@@ -38,6 +38,7 @@ public class Model {
     ArrayList<Integer> arrItemPosY;
     ArrayList<Integer> arrArmorPosX;
     ArrayList<Integer> arrArmorPosY;
+    ArrayList<Boolean> arrItemCollected;
 
     public Model() {
         score = 0; // 初期スコアは0
@@ -55,6 +56,7 @@ public class Model {
         arrItemPosY = new ArrayList<Integer>();
         arrArmorPosX = new ArrayList<Integer>();
         arrArmorPosY = new ArrayList<Integer>();
+        arrItemCollected = new ArrayList<Boolean>();
 
         timer = new Timer(1000, new ActionListener(){
             @Override
@@ -156,6 +158,7 @@ public class Model {
     public void setItemInfo(int itemPosX, int itemPosY) {
         arrItemPosX.add(itemPosX);
         arrItemPosY.add(itemPosY);
+        arrItemCollected.add(false);
     }
 
     //  アイテムを取得するとスコア増加
@@ -164,7 +167,8 @@ public class Model {
             isItemSameLane            = arrItemPosX.get(i) == playerPosX;
             isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
             isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
-            if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact) {
+            if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact && !arrItemCollected.get(i)) {
+                arrItemCollected.set(i, true);
                 return true;
             }
         }
@@ -191,6 +195,7 @@ public class Model {
         for (int i=arrItemPosY.size()-1; i>=0; i--) {
             arrItemPosX.remove(i);
             arrItemPosY.remove(i);
+            arrItemCollected.remove(i);
         }
     }
 
@@ -211,6 +216,10 @@ public class Model {
 
     public void increaseScore() {
         score++;
+    }
+
+    public void resetScore() {
+        score = 0;
     }
 
     public int getScore() {
