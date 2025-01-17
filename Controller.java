@@ -28,7 +28,7 @@ public class Controller {
         deletedItem = 0;
         generateCounter = 50;
         rockSpawnInterval = 100;
-        itemSpawnInterval = 150;
+        itemSpawnInterval = 200;
         offsetY = -100;
 
         try {
@@ -222,7 +222,7 @@ public class Controller {
                             deletedItem++;
                         }
                     }
-                    System.out.println("size(model): " + model.getItemPosY().size() + ", deletedRock: " + deletedItem + ", size(rocks): " + items.size());
+                    // System.out.println("size(model): " + model.getItemPosY().size() + ", deletedItem: " + deletedItem + ", size(items): " + items.size());
 
                     // 岩の位置更新
                     for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
@@ -253,11 +253,13 @@ public class Controller {
                     }
 
                     // アイテム取得判定
-                    if(model.handleItemCollecting()){
+                    int tmp = model.handleItemCollecting();
+                    if(tmp!=-1){
                         // スコアを増加
+                        System.out.println("handleItemCollecting: "+tmp);
                         model.increaseScore();
                         view.getScorePanel().updateScore(model.getScore());
-                        items.get(deletedItem).hideItem();
+                        items.get(tmp).hideItem();
                     }
                 }
 
