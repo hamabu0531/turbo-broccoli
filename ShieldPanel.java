@@ -28,7 +28,7 @@ public class ShieldPanel extends JPanel{
         int offsetX = 250, offsetY = -100;
         super.paintComponent(g);
         if(image!=null){
-            g.drawImage(image, x*200+offsetX, y*1+offsetY, getFocusCycleRootAncestor());
+            g.drawImage(image, x*200+offsetX-40, y*1+offsetY, getFocusCycleRootAncestor());
         }else{
             g.setColor(Color.PINK);
             g.fillOval(x*200+offsetX, (int)(y*1.00+offsetY), width, height);
@@ -45,6 +45,10 @@ public class ShieldPanel extends JPanel{
         this.x = shieldPosX;
         this.y = shieldPosY;
         repaint();
+    }
+
+        public void hideShield() {
+        setVisible(false);
     }
 }
 
