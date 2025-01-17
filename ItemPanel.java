@@ -1,10 +1,10 @@
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.border.LineBorder;
-import java.awt.event.*;
+import javax.swing.JPanel; // JPanelを使用
+import java.awt.Graphics;  // paintComponentでGraphicsを使用
+import java.awt.Color;     // 色設定でColorを使用
+import java.awt.Image;     // 画像表示でImageを使用
+import java.io.File;       // 画像ファイル読み込みでFileを使用
+import java.io.IOException; // 例外処理でIOExceptionを使用
+import javax.imageio.ImageIO; // ImageIOを使用して画像を読み込み
 
 /// アイテムクラス。得るとスコアが上がる的な。
 public class ItemPanel extends JPanel{

@@ -1,10 +1,16 @@
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.border.LineBorder;
-import java.awt.event.*;
+import javax.swing.JFrame;//アプリケーションのメインウィンドウ。
+import javax.swing.JPanel;//画面の分割やコンポーネントの配置用パネル。
+import javax.swing.JLabel;//テキストや画像を表示するためのラベル
+import javax.swing.JButton;//ボタンを作成してクリック操作を受け取るため
+import javax.swing.JLayeredPane;//パネルを重ねて表示するためのコンポーネント。
+import java.awt.Graphics;//カスタム描画で使用。paintComponent メソッド内でグラフィックス処理を行う。
+import java.awt.Color;//カラー設定
+import java.awt.Font;//テキストのフォント設定に使用。
+import java.awt.BorderLayout;  // BorderLayoutのため
+import java.awt.Component;      // Componentクラスのため
+import java.awt.Dimension;//コンポーネントのサイズを指定するため。
+import javax.swing.border.LineBorder;//パネルやコンポーネントに境界線を設定するため
+import java.awt.event.*;//はるとの実装終わったら消す．
 
 //こっちをいじる。
 // Vはユーザーに情報を表示する(主にJ~~関係)

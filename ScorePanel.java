@@ -1,10 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.border.LineBorder;
-import java.awt.event.*;
+import javax.swing.JPanel;       // JPanelを使用
+import javax.swing.JLabel;       // スコア表示用のJLabelを使用
+import java.awt.FlowLayout;      // レイアウトマネージャにFlowLayoutを使用
+import java.awt.Font;            // フォント設定にFontを使用
+import java.awt.Color;           // 色設定にColorを使用
 
 public class ScorePanel extends JPanel {
     private JLabel scoreLabel;
