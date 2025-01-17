@@ -28,6 +28,9 @@ public class Model {
     private boolean isItemSameLane;
     private boolean isItemInsideTopContact;
     private boolean isItemInsideBottomContact;
+    private boolean isArmorSameLane;
+    private boolean isArmorInsideTopContact;
+    private boolean isArmorInsideBottomContact;
     
     ArrayList<Integer> arrRockPosX;
     ArrayList<Integer> arrRockPosY;
@@ -35,6 +38,7 @@ public class Model {
     ArrayList<Integer> arrItemPosY;
     ArrayList<Integer> arrArmorPosX;
     ArrayList<Integer> arrArmorPosY;
+
     public Model() {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
@@ -70,6 +74,10 @@ public class Model {
     // +-----------+-----+------+-----+
     // | 位置       | 左  | 中央  | 右  |
     // +-----------+-----+------+-----+
+
+    public void setPlayerPositionZero() {
+        playerPosX = 0;
+    }
 
     public void moveToRight() {
         if (playerPosX != 1) playerPosX += 1;
@@ -157,7 +165,7 @@ public class Model {
             isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
             isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
             if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact) {
-                increaseScore();
+                increaseScore();    //  Controller側で呼び出す方法に変更してもよい
             }
         }
     }
@@ -268,11 +276,45 @@ public class Model {
         arrArmorPosY.add(armorPosY);
     }
 
+    //  アイテムを取得するとスコア増加
+    public void handleArmorCollecting() {
+        for (int i=0; i<arrRockPosY.size(); i++) {
+            isArmorSameLane            = arrArmorPosX.get(i) == playerPosX;
+            isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y - 50;
+            isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y + 50;
+            if (isArmorSameLane && isArmorInsideTopContact && isArmorInsideTopContact) {
+                getArmor();    //  Controller側で呼び出す方法に変更してもよい
+            }
+        }
+    }
+
+    public void deleteOffScreenArmor() {
+        for (int i=arrArmorPosY.size()-1; i>=0; i--) {
+            if (arrArmorPosY.get(i) > WINDOW_SIZE_Y) {
+                arrArmorPosX.remove(i);
+                arrArmorPosY.remove(i);
+            }
+        }
+    }
+
+    //  不要かも?
+    public void deleteSpecificArmor(int i) {
+        arrArmorPosX.remove(i);
+        arrArmorPosY.remove(i);
+    }
+
     //  鎧を全削除
     public void resetArmor() {
         for (int i=arrArmorPosY.size()-1; i>=0; i--) {
             arrArmorPosX.remove(i);
             arrArmorPosY.remove(i);
+        }
+    }
+
+    //  すべてのアイテムの座標に +3 をする (アイテムが画面下側へ移動する)
+    public void increaseArmorPosY() {
+        for (int i=0; i<arrArmorPosY.size(); i++) {
+            arrArmorPosY.set(i, arrArmorPosY.get(i) + speed);
         }
     }
 
