@@ -252,11 +252,11 @@ public class Controller {
                     }
 
                     // アイテム取得判定
-                    // if(model.handleItemCollecting()){
-                    //     // スコアを増加
-                    //     model.increaseScore();
-                    //     view.getScorePanel().updateScore(model.getScore());
-                    // }
+                    if(model.handleItemCollecting()){
+                        // スコアを増加
+                        model.increaseScore();
+                        view.getScorePanel().updateScore(model.getScore());
+                    }
                 }
 
                 long elapsedTime = System.currentTimeMillis() - startTime;
