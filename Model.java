@@ -162,17 +162,17 @@ public class Model {
     }
 
     //  アイテムを取得するとスコア増加
-    public boolean handleItemCollecting() {
+    public int handleItemCollecting() {
         for (int i=0; i<arrItemPosY.size(); i++) {
             isItemSameLane            = arrItemPosX.get(i) == playerPosX;
             isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y + 100;
             isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y - 100;
             if (isItemSameLane && isItemInsideTopContact && isItemInsideBottomContact && !arrItemCollected.get(i)) {
                 arrItemCollected.set(i, true);
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     public void deleteOffScreenItem() {
