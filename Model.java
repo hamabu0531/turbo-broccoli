@@ -165,8 +165,8 @@ public class Model {
     public boolean handleItemCollecting() {
         for (int i=0; i<arrItemPosY.size(); i++) {
             isItemSameLane            = arrItemPosX.get(i) == playerPosX;
-            isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
-            isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
+            isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y + 100;
+            isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y - 100;
             if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact && !arrItemCollected.get(i)) {
                 arrItemCollected.set(i, true);
                 return true;
@@ -294,8 +294,8 @@ public class Model {
     public boolean handleArmorCollecting() {
         for (int i=0; i<arrArmorPosY.size(); i++) {
             isArmorSameLane            = arrArmorPosX.get(i) == playerPosX;
-            isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y - 50;
-            isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y + 50;
+            isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y + 100;
+            isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y - 100;
             if (isArmorSameLane && isArmorInsideTopContact && isArmorInsideTopContact) {
                 return true;
             }
