@@ -160,7 +160,7 @@ public class Model {
 
     //  アイテムを取得するとスコア増加
     public boolean handleItemCollecting() {
-        for (int i=0; i<arrRockPosY.size(); i++) {
+        for (int i=0; i<arrItemPosY.size(); i++) {
             isItemSameLane            = arrItemPosX.get(i) == playerPosX;
             isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
             isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
@@ -283,7 +283,7 @@ public class Model {
 
     //  アイテムを取得するとスコア増加
     public boolean handleArmorCollecting() {
-        for (int i=0; i<arrRockPosY.size(); i++) {
+        for (int i=0; i<arrArmorPosY.size(); i++) {
             isArmorSameLane            = arrArmorPosX.get(i) == playerPosX;
             isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y - 50;
             isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y + 50;
