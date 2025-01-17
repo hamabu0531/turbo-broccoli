@@ -167,7 +167,7 @@ public class Model {
             isItemSameLane            = arrItemPosX.get(i) == playerPosX;
             isItemInsideTopContact    = arrItemPosY.get(i) <= PLAYER_POS_Y - 50;
             isItemInsideBottomContact = arrItemPosY.get(i) >= PLAYER_POS_Y + 50;
-            if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact /*&& !arrItemCollected.get(i)*/) {
+            if (isItemSameLane && isItemInsideTopContact && isItemInsideTopContact && !arrItemCollected.get(i)) {
                 arrItemCollected.set(i, true);
                 return true;
             }
