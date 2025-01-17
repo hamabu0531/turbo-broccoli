@@ -143,6 +143,7 @@ public class Controller {
                 model.setPlayerPositionZero();
                 generateCounter = 50;
                 deletedRock = 0;
+                deletedItem = 0;
                 rocks.clear();
                 items.clear();
                 model.resetRock();
@@ -164,6 +165,7 @@ public class Controller {
                 model.backToTitleScene();
                 generateCounter = 50;
                 deletedRock = 0;
+                deletedItem = 0;
                 model.setPlayerPositionZero();
                 model.resetScore();
                 rocks.clear();
@@ -226,7 +228,7 @@ public class Controller {
                             deletedItem++;
                         }
                     }
-                    // System.out.println("size(model): " + model.getItemPosY().size() + ", deletedItem: " + deletedItem + ", size(items): " + items.size());
+                    System.out.println("size(model): " + model.getItemPosY().size() + ", deletedItem: " + deletedItem + ", size(items): " + items.size());
 
                     // 岩の位置更新
                     for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
