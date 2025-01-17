@@ -13,8 +13,9 @@ import javax.swing.*;
 public class Controller {
     private Model model;
     private View view;
-    private ArrayList<RockPanel> rocks; // ArrayListに変更
-    private int deletedRock, generateCounter, spawnInterval;
+    private ArrayList<RockPanel> rocks; // ArrayListで実装
+    private ArrayList<ItemPanel> items;
+    private int deletedRock, deletedItem, generateCounter, rockSpawnInterval, itemSpawnInterval, offsetY;
     private Clip gameoverClip, gameBgmClip, titleBgmClip;
 
     public Controller(Model model, View view) {
@@ -22,9 +23,13 @@ public class Controller {
         this.model = model;
         this.view = view;
         rocks = new ArrayList<>();
+        items = new ArrayList<>();
         deletedRock = 0;
+        deletedItem = 0;
         generateCounter = 50;
-        spawnInterval = 100;
+        rockSpawnInterval = 100;
+        itemSpawnInterval = 150;
+        offsetY = -100;
 
         try {
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(Controller.class.getResource("Explosion.wav"));
@@ -119,6 +124,7 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.goToPlayScene();
+                model.setPlayerPositionZero();
                 view.startGame();
                 System.out.println("Title->Play");
 
@@ -155,6 +161,7 @@ public class Controller {
                 model.backToTitleScene();
                 generateCounter = 50;
                 deletedRock = 0;
+                model.setPlayerPositionZero();
                 rocks.clear();
                 model.resetRock();
                 model.goToPlayScene();
@@ -173,17 +180,28 @@ public class Controller {
 
                 if (model.isPlayScene() && !model.isGameOver()) {
                     // 岩生成
-                    if (generateCounter % spawnInterval == 0) {
-                        int num1 = new Random().nextInt(3) - 1;
-                        int num2 = num1;
+                    int num1=0, num2=0, num3=0;
+                    if (generateCounter % rockSpawnInterval == 0) {
+                        num1 = new Random().nextInt(3) - 1;
+                        num2 = num1;
                         while (num1 == num2) {
                             num2 = new Random().nextInt(3) - 1;
                         }
-                        generateRock(num1, -100);
+                        generateRock(num1, offsetY);
                         if (1 < new Random().nextInt(5)) {
-                            generateRock(num2, -100);
+                            generateRock(num2, offsetY);
                         }
                     }
+
+                    // アイテム生成
+                    if (generateCounter % itemSpawnInterval == 0) {
+                        num3 = new Random().nextInt(3) - 1; // -1, 0, 1
+                        while(num3 == num1 || num3 == num2){
+                            num3 = new Random().nextInt(3) - 1;
+                        }
+                        generateItem(num3, offsetY);
+                    }
+
                     generateCounter++;
 
                     // 岩移動と削除
@@ -193,7 +211,16 @@ public class Controller {
                             deletedRock++;
                         }
                     }
-                    System.out.println("size(model): " + model.getRockPosY().size() + ", deletedRock: " + deletedRock + ", size(rocks): " + rocks.size());
+                    // System.out.println("size(model): " + model.getRockPosY().size() + ", deletedRock: " + deletedRock + ", size(rocks): " + rocks.size());
+
+                    // アイテム移動と削除
+                    model.increaseItemPosY();
+                    for (int i = deletedItem; i < model.getItemPosY().size(); i++) {
+                        if (model.getItemPosY().get(i) > 1200) {
+                            deletedItem++;
+                        }
+                    }
+                    System.out.println("size(model): " + model.getItemPosY().size() + ", deletedRock: " + deletedItem + ", size(rocks): " + items.size());
 
                     // 岩の位置更新
                     for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
@@ -217,6 +244,16 @@ public class Controller {
                             System.out.println("You Lose...");
                         }
                     }
+
+                    // アイテムの位置更新
+                    for (int i = deletedItem; i < model.getItemPosY().size(); i++) {
+                        items.get(i).updateItemPos(model.getItemPosY().get(i)); // 再描画を含む
+                    }
+
+                    // アイテム取得判定
+                    // if(model.handleItemCollecting()){
+                        
+                    // }
                 }
 
                 long elapsedTime = System.currentTimeMillis() - startTime;
@@ -233,5 +270,11 @@ public class Controller {
         model.setRockInfo(posX, posY);
         RockPanel newRock = view.addRock(posX, posY);
         rocks.add(newRock);
+    }
+
+    private void generateItem(int posX, int posY) {
+        model.setItemInfo(posX, posY);
+        ItemPanel newItem = view.addItem(posX, posY);
+        items.add(newItem);
     }
 }
