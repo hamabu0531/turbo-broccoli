@@ -248,11 +248,14 @@ public class Controller {
                     // アイテムの位置更新
                     for (int i = deletedItem; i < model.getItemPosY().size(); i++) {
                         items.get(i).updateItemPos(model.getItemPosY().get(i)); // 再描画を含む
+                        items.get(i).updateItemPos(model.getItemPosY().get(i)); // 再描画を含む
                     }
 
                     // アイテム取得判定
                     // if(model.handleItemCollecting()){
-                        
+                    //     // スコアを増加
+                    //     model.increaseScore();
+                    //     view.getScorePanel().updateScore(model.getScore());
                     // }
                 }
 
