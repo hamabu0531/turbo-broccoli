@@ -144,7 +144,9 @@ public class Controller {
                 generateCounter = 50;
                 deletedRock = 0;
                 rocks.clear();
+                items.clear();
                 model.resetRock();
+                model.resetItem();
                 view.backToTitle();
                 if (gameBgmClip != null) {
                     gameBgmClip.stop();
@@ -165,7 +167,9 @@ public class Controller {
                 model.setPlayerPositionZero();
                 model.resetScore();
                 rocks.clear();
+                items.clear();
                 model.resetRock();
+                model.resetItem();
                 model.goToPlayScene();
                 view.retryGame();
                 System.out.println("Retry");
