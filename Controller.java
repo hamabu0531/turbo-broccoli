@@ -124,7 +124,6 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.goToPlayScene();
-                model.setPlayerPositionZero();
                 view.startGame();
                 System.out.println("Title->Play");
 
@@ -140,6 +139,8 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.backToTitleScene();
+                model.resetScore();
+                model.setPlayerPositionZero();
                 generateCounter = 50;
                 deletedRock = 0;
                 rocks.clear();
@@ -162,6 +163,7 @@ public class Controller {
                 generateCounter = 50;
                 deletedRock = 0;
                 model.setPlayerPositionZero();
+                model.resetScore();
                 rocks.clear();
                 model.resetRock();
                 model.goToPlayScene();
