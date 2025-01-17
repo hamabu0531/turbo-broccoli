@@ -200,6 +200,10 @@ public class Model {
         }
     }
 
+    public ArrayList<Integer> getItemPosY() {
+        return arrItemPosY;
+    }
+
     // +------------------------------------------------------------------+
     //  システム
     // +------------------------------------------------------------------+
@@ -332,5 +336,9 @@ public class Model {
 
     public boolean hasArmor() {
         return isArmored;
+    }
+
+    public ArrayList<Integer> getArmorPosY() {
+        return arrArmorPosY;
     }
 }
