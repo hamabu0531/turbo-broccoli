@@ -27,8 +27,8 @@ public class Controller {
         deletedRock = 0;
         deletedItem = 0;
         generateCounter = 50;
-        rockSpawnInterval = 100;
-        itemSpawnInterval = 200;
+        rockSpawnInterval = 100; // ゲームの難易度で数値変更可
+        itemSpawnInterval = 200; // ゲームの難易度で数値変更可
         offsetY = -100;
 
         try {
@@ -66,45 +66,6 @@ public class Controller {
                     view.getPlayerPanel().updatePlayerPos(model.getPlayerPosX());
                     // ここのデバッグ関数は削除
                 }
-
-                // Titleシーン->Playシーン(デバッグ)
-                // if (e.getKeyCode() == KeyEvent.VK_SPACE && model.isTitleScene()) {
-                //     model.goToPlayScene();
-                //     gameTimer.start();
-                //     System.out.println("Title->Play");
-
-                //     // ここでbgm流す
-                //     if(gameBgmClip!=null){
-                //         gameBgmClip.setFramePosition(0);
-                //         gameBgmClip.start();
-                //         titleBgmClip.stop();
-                //     }
-                // }
-
-                // Playシーン->Titleシーン(デバッグ)
-                // if (e.getKeyChar() == 'q' && model.isGameOver()) {
-                //     model.backToTitleScene();
-                //     generateCounter = 0;
-                //     // 岩の配列リセット
-                //     rocks.clear();
-                //     model.resetRock();
-                //     if(gameBgmClip!=null){
-                //         gameBgmClip.stop();
-                //     }
-                //     if(titleBgmClip!=null){
-                //         titleBgmClip.start();
-                //     }
-                //     System.out.println("Play->Title");
-                // }
-
-                // 岩生成(デバッグ用)
-                // if (e.getKeyCode() == KeyEvent.VK_1) {
-                //     generateRock(-1, -100);
-                // } else if (e.getKeyCode() == KeyEvent.VK_2) {
-                //     generateRock(0, -100);
-                // } else if (e.getKeyCode() == KeyEvent.VK_3) {
-                //     generateRock(1, -100);
-                // }
 
                 // アーマー付与(デバッグ用)
                 if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
@@ -213,7 +174,7 @@ public class Controller {
                     generateCounter++;
 
                     // 岩移動と削除
-                    model.increaseRockPosY();
+                    model.increaseRockPosY(); // ゲームの難易度で呼び出し回数変更可
                     for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
                         if (model.getRockPosY().get(i) > 1100) {
                             deletedRock++;
@@ -222,7 +183,7 @@ public class Controller {
                     // System.out.println("size(model): " + model.getRockPosY().size() + ", deletedRock: " + deletedRock + ", size(rocks): " + rocks.size());
 
                     // アイテム移動と削除
-                    model.increaseItemPosY();
+                    model.increaseItemPosY(); // ゲームの難易度で呼び出し回数変更可
                     for (int i = deletedItem; i < model.getItemPosY().size(); i++) {
                         if (model.getItemPosY().get(i) > 1100) {
                             deletedItem++;
