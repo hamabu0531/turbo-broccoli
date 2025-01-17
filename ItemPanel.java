@@ -46,5 +46,9 @@ public class ItemPanel extends JPanel{
         this.y = itemPosY;
         repaint();
     }
+
+    public void hideItem() {
+        setVisible(false);
+    }
 }
 
