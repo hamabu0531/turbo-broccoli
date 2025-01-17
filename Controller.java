@@ -6,7 +6,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.sound.sampled.*;
+// import javax.sound.sampledAudioSystem.getAudioInputStream;//: 音声ファイルを読み込むため。
+// import javax.sound.sampled.Clip;// 音声を再生・停止するためのオブジェクト。
+// import javax.sound.sampled.AudioInputStream;//: 音声データを読み込むためのストリーム。
 import javax.swing.*;
+// import javax.swing.JFrame;
+// import javax.swing.JPanel;
+// import javax.swing.JLabel;
+// import javax.swing.JButton;
 
 // Cはユーザー入力を処理する(Listener関係)
 // Cは、Mの更新をし、Vにイベントを伝える
@@ -180,7 +187,7 @@ public class Controller {
 
         // Timer基準->フレーム基準
         new Thread(() -> {
-            final int frameRate = 120; // 1秒間のフレーム数(増やしすぎると重くなる?)
+            final int frameRate = 60; // 1秒間のフレーム数(増やしすぎると重くなる?)
             final long frameTime = 1000 / frameRate; // 1フレームにかかる時間(ms)
 
             while (true) {

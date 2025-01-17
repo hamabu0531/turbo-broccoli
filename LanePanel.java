@@ -1,10 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.border.LineBorder;
-import java.awt.event.*;
+import javax.swing.JPanel;       // JPanelを使用
+import java.awt.Graphics;       // paintComponentでGraphicsを使用
+import java.awt.Graphics2D;     // Graphics2Dを使用
+import java.awt.Color;          // 色の定義にColorを使用
+import java.awt.GradientPaint;  // グラデーションの設定にGradientPaintを使用
 
 ///背景クラス
     public class LanePanel extends JPanel {
