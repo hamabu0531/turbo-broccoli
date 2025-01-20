@@ -204,10 +204,12 @@ public class Controller {
                     }
 
                     // 衝突判定
-                    if (model.checkCollision()) {
+                    int isCollided = model.checkCollision();
+                    if (isCollided != -1) {
                         if (model.hasArmor()) {
                             model.breakArmor();
                             view.getShieldLifePanel().hideShieldLife();
+                            rocks.get(isCollided).hideRock();
                             System.out.println("Armor has broken!");
                         } else {
                             if (gameoverClip != null) {
