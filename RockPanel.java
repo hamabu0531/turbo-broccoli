@@ -46,6 +46,10 @@ public class RockPanel extends JPanel{
         this.y = rockPosY;
         repaint();
     }
+
+    public void hideRock() {
+        setVisible(false);
+    }
 }
 
 
