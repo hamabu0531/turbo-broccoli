@@ -139,7 +139,7 @@ public class Model {
 
     //  すべての岩に対してプレイヤーのindexとy座標が一致するかをチェック
     //  1つでも一致するなら衝突とみなす (trueを返す)
-    public boolean checkCollision() {
+    public int checkCollision() {
         for (int i=0; i<arrRockPosY.size(); i++) {
             isRockSameLane            = arrRockPosX.get(i) == playerPosX;
             isRockInsideBottomContact = arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100;
@@ -149,10 +149,10 @@ public class Model {
                 if (hasArmor()) {
                     arrRockDestroyed.set(i, true);
                 }
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     public ArrayList<Integer> getRockPosY() {
