@@ -44,6 +44,7 @@ public class Model {
     ArrayList<Integer> arrArmorPosX;
     ArrayList<Integer> arrArmorPosY;
     ArrayList<Boolean> arrItemCollected;
+    ArrayList<Boolean> arrRockDestroyed;
 
     public Model() {
         score = 0; // 初期スコアは0
@@ -62,6 +63,7 @@ public class Model {
         arrArmorPosX = new ArrayList<Integer>();
         arrArmorPosY = new ArrayList<Integer>();
         arrItemCollected = new ArrayList<Boolean>();
+        arrRockDestroyed = new ArrayList<Boolean>();
 
         timer = new Timer(1000, new ActionListener(){
             @Override
@@ -105,6 +107,7 @@ public class Model {
     public void setRockInfo(int rockPosX, int rockPosY) {
         arrRockPosX.add(rockPosX);  //  -1, 0, 1
         arrRockPosY.add(rockPosY);  //  岩のy座標
+        arrRockDestroyed.add(false);
     }
 
     public void deleteOffScreenRock() {
@@ -112,6 +115,7 @@ public class Model {
             if (arrRockPosY.get(i) > WINDOW_SIZE_Y) {
                 arrRockPosX.remove(i);
                 arrRockPosY.remove(i);
+                arrRockDestroyed.remove(i);
             }
         }
     }
@@ -120,6 +124,7 @@ public class Model {
     public void deleteSpecificRock(int i) {
         arrRockPosX.remove(i);
         arrRockPosY.remove(i);
+        arrRockDestroyed.remove(i);
     }
 
     //  岩を全削除
@@ -127,6 +132,7 @@ public class Model {
         for (int i=arrRockPosY.size()-1; i>=0; i--) {
             arrRockPosX.remove(i);
             arrRockPosY.remove(i);
+            arrRockDestroyed.remove(i);
         }
     }
 
@@ -145,7 +151,10 @@ public class Model {
             isRockInsideBottomContact = arrRockPosY.get(i) <= PLAYER_POS_Y + 2 * ROCK_RADIUS + 100;
             isRockInsideTopContact    = arrRockPosY.get(i) >= PLAYER_POS_Y - 2 * ROCK_RADIUS + 100;
             //  岩とプレイヤーが同じレーン & プレイヤーと岩が少しでも重なっているならば
-            if (isRockSameLane && isRockInsideBottomContact && isRockInsideTopContact) {
+            if (isRockSameLane && isRockInsideBottomContact && isRockInsideTopContact && !arrRockDestroyed.get(i)) {
+                if (hasArmor()) {
+                    arrRockDestroyed.set(i, true);
+                }
                 return true;
             }
         }
@@ -185,6 +194,7 @@ public class Model {
             if (arrItemPosY.get(i) > WINDOW_SIZE_Y) {
                 arrItemPosX.remove(i);
                 arrItemPosY.remove(i);
+                arrItemCollected.remove(i);
             }
         }
     }
@@ -193,6 +203,7 @@ public class Model {
     public void deleteSpecificItem(int i) {
         arrItemPosX.remove(i);
         arrItemPosY.remove(i);
+        arrItemCollected.remove(i);
     }
 
     //  アイテムを全削除
