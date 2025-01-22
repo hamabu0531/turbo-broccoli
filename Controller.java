@@ -22,7 +22,8 @@ public class Controller {
     private View view;
     private ArrayList<RockPanel> rocks; // ArrayListで実装
     private ArrayList<ItemPanel> items;
-    private int deletedRock, deletedItem, generateCounter, rockSpawnInterval, itemSpawnInterval, offsetY;
+    private ArrayList<ShieldPanel> armors;
+    private int deletedRock, deletedItem, deletedArmor, generateCounter, rockSpawnInterval, itemSpawnInterval, armorSpawnInterval, offsetY;
     private Clip gameoverClip, gameBgmClip, titleBgmClip;
 
     public Controller(Model model, View view) {
@@ -31,11 +32,14 @@ public class Controller {
         this.view = view;
         rocks = new ArrayList<>();
         items = new ArrayList<>();
+        armors = new ArrayList<>();
         deletedRock = 0;
         deletedItem = 0;
+        deletedArmor = 0;
         generateCounter = 50;
         rockSpawnInterval = 100; // ゲームの難易度で数値変更可
-        itemSpawnInterval = 200; // ゲームの難易度で数値変更可
+        itemSpawnInterval = 100; // ゲームの難易度で数値変更可
+        armorSpawnInterval = 200; // ゲームの難易度で数値変更可
         offsetY = -100;
 
         try {
@@ -75,11 +79,11 @@ public class Controller {
                 }
 
                 // アーマー付与(デバッグ用)
-                if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
-                    model.getArmor();
-                    view.getShieldLifePanel().showShieldLife(); // 盾所持表示
-                    System.out.println("You got armored");
-                }
+                // if (e.getKeyCode() == KeyEvent.VK_ENTER && model.isPlayScene()) {
+                //     model.getArmor();
+                //     view.getShieldLifePanel().showShieldLife(); // 盾所持表示
+                //     System.out.println("You got armored");
+                // }
             }
 
             public void keyReleased(KeyEvent e) {}
@@ -109,13 +113,18 @@ public class Controller {
                 model.backToTitleScene();
                 model.resetScore();
                 model.setPlayerPositionZero();
+
                 generateCounter = 50;
                 deletedRock = 0;
                 deletedItem = 0;
+                deletedArmor = 0;
                 rocks.clear();
                 items.clear();
+                armors.clear();
+
                 model.resetRock();
                 model.resetItem();
+                model.resetArmor();
                 view.backToTitle();
                 if (gameBgmClip != null) {
                     gameBgmClip.stop();
@@ -131,15 +140,20 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.backToTitleScene();
+
                 generateCounter = 50;
                 deletedRock = 0;
                 deletedItem = 0;
-                model.setPlayerPositionZero();
-                model.resetScore();
+                deletedArmor = 0;
                 rocks.clear();
                 items.clear();
+                armors.clear();
+
+                model.setPlayerPositionZero();
+                model.resetScore();
                 model.resetRock();
                 model.resetItem();
+                model.resetArmor();
                 model.goToPlayScene();
                 view.retryGame();
                 System.out.println("Retry");
@@ -169,8 +183,18 @@ public class Controller {
                         }
                     }
 
+                    // 鎧生成
+                    if(generateCounter % armorSpawnInterval == 0){
+                        num3 = new Random().nextInt(3) - 1;
+                        while(num3 == num1 || num3 == num2){
+                            num3 = new Random().nextInt(3) - 1;
+                        }
+                        System.out.println("generateArmor: "+num3);
+                        generateArmor(num3, offsetY);
+                    }
+
                     // アイテム生成
-                    if (generateCounter % itemSpawnInterval == 0) {
+                    else if (generateCounter % itemSpawnInterval == 0) {
                         num3 = new Random().nextInt(3) - 1; // -1, 0, 1
                         while(num3 == num1 || num3 == num2){
                             num3 = new Random().nextInt(3) - 1;
@@ -196,7 +220,17 @@ public class Controller {
                             deletedItem++;
                         }
                     }
-                    System.out.println("size(model): " + model.getItemPosY().size() + ", deletedItem: " + deletedItem + ", size(items): " + items.size());
+                    // System.out.println("size(model): " + model.getItemPosY().size() + ", deletedItem: " + deletedItem + ", size(items): " + items.size());
+
+                    // 鎧移動と削除
+                    model.increaseArmorPosY();
+                    for(int i=deletedArmor; i<model.getArmorPosY().size(); i++){
+                        if(model.getArmorPosY().get(i) > 1100){
+                            deletedArmor++;
+                        }
+                    }
+                    System.out.println("size(model): " + model.getArmorPosY().size() + ", deletedArmor: " + deletedArmor + ", size(armors): " + armors.size());
+
 
                     // 岩の位置更新
                     for (int i = deletedRock; i < model.getRockPosY().size(); i++) {
@@ -237,6 +271,19 @@ public class Controller {
                         view.getScorePanel().updateScore(model.getScore());
                         items.get(tmp).hideItem();
                     }
+
+                    // 鎧の位置更新
+                    for(int i=deletedArmor; i<model.getArmorPosY().size(); i++){
+                        armors.get(i).updateShieldPos(model.getArmorPosY().get(i));
+                    }
+
+                    // 鎧との衝突判定
+                    int getArmor = model.handleArmorCollecting();
+                    if(getArmor != -1){
+                        model.getArmor();
+                        view.getShieldLifePanel().showShieldLife();
+                        armors.get(getArmor).hideShield();
+                    }
                 }
 
                 long elapsedTime = System.currentTimeMillis() - startTime;
@@ -259,5 +306,11 @@ public class Controller {
         model.setItemInfo(posX, posY);
         ItemPanel newItem = view.addItem(posX, posY);
         items.add(newItem);
+    }
+
+    private void generateArmor(int posX, int posY){
+        model.setArmorInfo(posX, posY);
+        ShieldPanel newArmor = view.addShield(posX, posY);
+        armors.add(newArmor);
     }
 }
