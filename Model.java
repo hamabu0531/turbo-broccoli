@@ -227,7 +227,7 @@ public class Model {
     // +------------------------------------------------------------------+
 
     public void increaseScore() {
-        score++;
+        score += 10000;
     }
 
     public void resetScore() {
