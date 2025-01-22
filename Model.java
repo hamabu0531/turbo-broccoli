@@ -38,6 +38,7 @@ public class Model {
     ArrayList<Integer> arrArmorPosX;
     ArrayList<Integer> arrArmorPosY;
     ArrayList<Boolean> arrItemCollected;
+    ArrayList<Boolean> arrArmorCollected;
     ArrayList<Boolean> arrRockDestroyed;
 
     public Model() {
@@ -57,6 +58,7 @@ public class Model {
         arrArmorPosX = new ArrayList<Integer>();
         arrArmorPosY = new ArrayList<Integer>();
         arrItemCollected = new ArrayList<Boolean>();
+        arrArmorCollected = new ArrayList<Boolean>();
         arrRockDestroyed = new ArrayList<Boolean>();
 
         timer = new Timer(1000, new ActionListener(){
@@ -298,15 +300,17 @@ public class Model {
     public void setArmorInfo(int armorPosX, int armorPosY) {
         arrArmorPosX.add(armorPosX);
         arrArmorPosY.add(armorPosY);
+        arrArmorCollected.add(false);
     }
 
-    //  アイテムを取得するとスコア増加
+    //  鎧を取得する
     public int handleArmorCollecting() {
         for (int i=0; i<arrArmorPosY.size(); i++) {
             isArmorSameLane            = arrArmorPosX.get(i) == playerPosX;
             isArmorInsideTopContact    = arrArmorPosY.get(i) <= PLAYER_POS_Y + 100;
             isArmorInsideBottomContact = arrArmorPosY.get(i) >= PLAYER_POS_Y - 100;
-            if (isArmorSameLane && isArmorInsideTopContact && isArmorInsideBottomContact) {
+            if (isArmorSameLane && isArmorInsideTopContact && isArmorInsideBottomContact && !arrArmorCollected.get(i)) {
+                arrArmorCollected.set(i, true);
                 return i;
             }
         }
@@ -318,6 +322,7 @@ public class Model {
             if (arrArmorPosY.get(i) > WINDOW_SIZE_Y) {
                 arrArmorPosX.remove(i);
                 arrArmorPosY.remove(i);
+                arrArmorCollected.remove(i);
             }
         }
     }
@@ -326,6 +331,7 @@ public class Model {
     public void deleteSpecificArmor(int i) {
         arrArmorPosX.remove(i);
         arrArmorPosY.remove(i);
+        arrArmorCollected.remove(i);
     }
 
     //  鎧を全削除
@@ -333,6 +339,7 @@ public class Model {
         for (int i=arrArmorPosY.size()-1; i>=0; i--) {
             arrArmorPosX.remove(i);
             arrArmorPosY.remove(i);
+            arrArmorCollected.remove(i);
         }
     }
 
