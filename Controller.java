@@ -37,9 +37,9 @@ public class Controller {
         deletedItem = 0;
         deletedArmor = 0;
         generateCounter = 50;
-        rockSpawnInterval = 100; // ゲームの難易度で数値変更可
-        itemSpawnInterval = 180; // ゲームの難易度で数値変更可
-        armorSpawnInterval = 1600; // ゲームの難易度で数値変更可
+        rockSpawnInterval = 30; // ゲームの難易度で数値変更可
+        itemSpawnInterval = 80; // ゲームの難易度で数値変更可
+        armorSpawnInterval = 500; // ゲームの難易度で数値変更可
         offsetY = -100;
 
         try {
