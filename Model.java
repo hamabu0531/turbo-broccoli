@@ -9,8 +9,6 @@ import java.util.*;
 
 public class Model {
     private int score;
-    private Timer timer;
-    private int remainingTime;
     private boolean isTitleScene;
     private boolean isPlayScene;
     private boolean isGameStarted;
@@ -44,7 +42,6 @@ public class Model {
     public Model() {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
-        remainingTime = 100;
         speed = 3;
         isTitleScene = true;
         isGameStarted = false;
@@ -60,19 +57,6 @@ public class Model {
         arrItemCollected = new ArrayList<Boolean>();
         arrArmorCollected = new ArrayList<Boolean>();
         arrRockDestroyed = new ArrayList<Boolean>();
-
-        timer = new Timer(1000, new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(remainingTime > 0){
-                    remainingTime--;
-                }else{
-                    isGameOver = true;
-                    timer.stop();
-                }
-            }
-
-        });
     }
     // +-----------+-----+------+-----+
     // | position  | -1  |  0   | 1   |
@@ -132,7 +116,7 @@ public class Model {
         }
     }
 
-    //  すべての岩の座標に +3 をする (岩が画面下側へ移動する)
+    //  すべての岩の座標を speed の値だけ増加させる (岩が画面下側へ移動する)
     public void increaseRockPosY() {
         for (int i=0; i<arrRockPosY.size(); i++) {
             arrRockPosY.set(i, arrRockPosY.get(i) + speed);
@@ -211,7 +195,7 @@ public class Model {
         }
     }
 
-    //  すべてのアイテムの座標に +3 をする (アイテムが画面下側へ移動する)
+    //  すべてのアイテムの座標を speed の値だけ増加させる (アイテムが画面下側へ移動する)
     public void increaseItemPosY() {
         for (int i=0; i<arrItemPosY.size(); i++) {
             arrItemPosY.set(i, arrItemPosY.get(i) + speed);
@@ -236,10 +220,6 @@ public class Model {
 
     public int getScore() {
         return score;
-    }
-
-    public int getRemainingTime() {
-        return remainingTime;
     }
 
     //  岩やアイテムの速度変更
@@ -282,12 +262,10 @@ public class Model {
 
     public void startGame() {
         isGameStarted = true;
-        timer.start();
     }
 
     public void stopGame() {
         isGameOver = true;
-        timer.stop();
     }
 
     // +------------------------------------------------------------------+
@@ -343,7 +321,7 @@ public class Model {
         }
     }
 
-    //  すべてのアイテムの座標に +3 をする (アイテムが画面下側へ移動する)
+    //  すべての鎧の座標を speed の値だけ増加させる (鎧が画面下側へ移動する)
     public void increaseArmorPosY() {
         for (int i=0; i<arrArmorPosY.size(); i++) {
             arrArmorPosY.set(i, arrArmorPosY.get(i) + speed);
