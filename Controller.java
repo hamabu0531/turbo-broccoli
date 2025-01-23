@@ -24,7 +24,7 @@ public class Controller {
     private ArrayList<ItemPanel> items;
     private ArrayList<ShieldPanel> armors;
     private int deletedRock, deletedItem, deletedArmor, generateCounter, rockSpawnInterval, itemSpawnInterval, armorSpawnInterval, offsetY;
-    private Clip gameoverClip, gameBgmClip, titleBgmClip;
+    private Clip gameoverClip, gameBgmClip, titleBgmClip, armorEquipClip, armorBreakClip, itemCollectClip;
 
     public Controller(Model model, View view) {
         // 初期設定
@@ -38,8 +38,8 @@ public class Controller {
         deletedArmor = 0;
         generateCounter = 50;
         rockSpawnInterval = 100; // ゲームの難易度で数値変更可
-        itemSpawnInterval = 100; // ゲームの難易度で数値変更可
-        armorSpawnInterval = 200; // ゲームの難易度で数値変更可
+        itemSpawnInterval = 200; // ゲームの難易度で数値変更可
+        armorSpawnInterval = 1600; // ゲームの難易度で数値変更可
         offsetY = -100;
 
         try {
@@ -51,9 +51,22 @@ public class Controller {
             gameBgmClip = AudioSystem.getClip();
             gameBgmClip.open(audioIn2);
 
-            AudioInputStream audioIn3 = AudioSystem.getAudioInputStream(Controller.class.getResource("Title BGMへのURL"));
-            titleBgmClip = AudioSystem.getClip();
-            titleBgmClip.open(audioIn3);
+            // 以下が読み込めないため一次的にコメントアウト
+            // AudioInputStream audioIn3 = AudioSystem.getAudioInputStream(Controller.class.getResource("Title BGMへのURL"));
+            // titleBgmClip = AudioSystem.getClip();
+            // titleBgmClip.open(audioIn3);
+
+            AudioInputStream audioIn4 = AudioSystem.getAudioInputStream(Controller.class.getResource("ArmorEquip.wav"));
+            armorEquipClip = AudioSystem.getClip();
+            armorEquipClip.open(audioIn4);
+
+            AudioInputStream audioIn5 = AudioSystem.getAudioInputStream(Controller.class.getResource("ArmorBreak.wav"));
+            armorBreakClip = AudioSystem.getClip();
+            armorBreakClip.open(audioIn5);
+
+            AudioInputStream audioIn6 = AudioSystem.getAudioInputStream(Controller.class.getResource("ItemCollect.wav"));
+            itemCollectClip = AudioSystem.getClip();
+            itemCollectClip.open(audioIn6);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,7 +202,7 @@ public class Controller {
                         while(num3 == num1 || num3 == num2){
                             num3 = new Random().nextInt(3) - 1;
                         }
-                        System.out.println("generateArmor: "+num3);
+                        //System.out.println("generateArmor: "+num3);
                         generateArmor(num3, offsetY);
                     }
 
@@ -229,7 +242,7 @@ public class Controller {
                             deletedArmor++;
                         }
                     }
-                    System.out.println("size(model): " + model.getArmorPosY().size() + ", deletedArmor: " + deletedArmor + ", size(armors): " + armors.size());
+                    // System.out.println("size(model): " + model.getArmorPosY().size() + ", deletedArmor: " + deletedArmor + ", size(armors): " + armors.size());
 
 
                     // 岩の位置更新
@@ -244,6 +257,11 @@ public class Controller {
                             model.breakArmor();
                             view.getShieldLifePanel().hideShieldLife();
                             rocks.get(isCollided).hideRock();
+                            if (armorBreakClip != null) {
+                                System.out.println("Armor sound(break)");
+                                armorBreakClip.setFramePosition(0);
+                                armorBreakClip.start();
+                            }
                             System.out.println("Armor has broken!");
                         } else {
                             if (gameoverClip != null) {
@@ -266,10 +284,14 @@ public class Controller {
                     int tmp = model.handleItemCollecting();
                     if(tmp!=-1){
                         // スコアを増加
-                        System.out.println("handleItemCollecting: "+tmp);
                         model.increaseScore();
                         view.getScorePanel().updateScore(model.getScore());
                         items.get(tmp).hideItem();
+                        if(itemCollectClip != null){
+                            System.out.println("Item sound");
+                            itemCollectClip.setFramePosition(0);
+                            itemCollectClip.start();
+                        }
                     }
 
                     // 鎧の位置更新
@@ -283,6 +305,11 @@ public class Controller {
                         model.getArmor();
                         view.getShieldLifePanel().showShieldLife();
                         armors.get(getArmor).hideShield();
+                        if(armorEquipClip != null){
+                            System.out.println("Armor sound");
+                            armorEquipClip.setFramePosition(0);
+                            armorEquipClip.start();
+                        }
                     }
                 }
 
