@@ -1,8 +1,10 @@
-import javax.swing.JPanel;       // JPanelを使用
-import javax.swing.JLabel;       // スコア表示用のJLabelを使用
+import java.awt.Color;           // 色設定にColorを使用
 import java.awt.FlowLayout;      // レイアウトマネージャにFlowLayoutを使用
 import java.awt.Font;            // フォント設定にFontを使用
-import java.awt.Color;           // 色設定にColorを使用
+import java.text.NumberFormat;       //数字の適切な位置に，が入る
+import java.util.Locale;             //上のやつに必要
+import javax.swing.JLabel;       // スコア表示用のJLabelを使用
+import javax.swing.JPanel;       // JPanelを使用
 
 public class ScorePanel extends JPanel {
     private JLabel scoreLabel;
@@ -16,7 +18,10 @@ public class ScorePanel extends JPanel {
         add(scoreLabel);
     }
 
-    public void updateScore(int score) {//Controllerで呼ぶ
-        scoreLabel.setText("[Score: ¥" + score + "]");
+    public void updateScore(int score) {
+        NumberFormat formatter = NumberFormat.getNumberInstance(Locale.US);
+        String formattedScore = formatter.format(score);
+        scoreLabel.setText("[Score: ¥" + formattedScore + "]");
     }
+    
 }
