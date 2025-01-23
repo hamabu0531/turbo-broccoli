@@ -51,10 +51,9 @@ public class Controller {
             gameBgmClip = AudioSystem.getClip();
             gameBgmClip.open(audioIn2);
 
-            // 以下が読み込めないため一次的にコメントアウト
-            // AudioInputStream audioIn3 = AudioSystem.getAudioInputStream(Controller.class.getResource("Title BGMへのURL"));
-            // titleBgmClip = AudioSystem.getClip();
-            // titleBgmClip.open(audioIn3);
+            AudioInputStream audioIn3 = AudioSystem.getAudioInputStream(Controller.class.getResource("TitleBGM.wav"));
+            titleBgmClip = AudioSystem.getClip();
+            titleBgmClip.open(audioIn3);
 
             AudioInputStream audioIn4 = AudioSystem.getAudioInputStream(Controller.class.getResource("ArmorEquip.wav"));
             armorEquipClip = AudioSystem.getClip();
@@ -108,15 +107,26 @@ public class Controller {
         view.getStartButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.goToPlayScene();
-                view.startGame();
-                System.out.println("Title->Play");
+                titleBgmClip.stop();
+                
+                // ここにボタン効果音
 
-                if (gameBgmClip != null) {
-                    gameBgmClip.setFramePosition(0);
-                    gameBgmClip.start();
-                    titleBgmClip.stop();
-                }
+                // 1秒の遅延
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (gameBgmClip != null) {
+                            gameBgmClip.setFramePosition(0);
+                            gameBgmClip.start();
+                        }
+        
+                        model.goToPlayScene();
+                        view.startGame();
+                        System.out.println("Title->Play");
+                    }
+                });
+                timer.setRepeats(false); // 一回だけ実行
+                timer.start();
             }
         });
 
