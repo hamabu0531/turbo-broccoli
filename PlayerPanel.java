@@ -17,7 +17,7 @@ public class PlayerPanel extends JPanel{
             x = 0; y = 0;
             width = 100; height = 100;
             try{
-                image = ImageIO.read(new File("bike_back1(1).png"));
+                image = ImageIO.read(new File("shuhei.png"));
             }catch(IOException e){
                 e.printStackTrace();
             }
@@ -28,7 +28,7 @@ public class PlayerPanel extends JPanel{
             int offsetX = 250, offsetY = 700;
             super.paintComponent(g);
             if(image!=null){
-                g.drawImage(image, x*200+offsetX, y*100+offsetY, getFocusCycleRootAncestor());
+                g.drawImage(image, x*200+offsetX-40, y*100+offsetY, getFocusCycleRootAncestor());
             }else{
                 g.setColor(Color.CYAN);
                 g.fillOval(x*200+offsetX, y*100+offsetY, width, height);

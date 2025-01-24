@@ -12,7 +12,7 @@ public class ScorePanel extends JPanel {
     public ScorePanel() {
         setLayout(new FlowLayout(FlowLayout.CENTER));//コンポーネントを横一列に並べるシンプルな配置
         setOpaque(false); // 背景を透明にする
-        scoreLabel = new JLabel("[ Score: ¥0 ]");
+        scoreLabel = new JLabel("[ Score: 0g ]");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
         scoreLabel.setForeground(Color.RED); // 赤い文字
         add(scoreLabel);
@@ -20,8 +20,8 @@ public class ScorePanel extends JPanel {
 
     public void updateScore(int score) {
         NumberFormat formatter = NumberFormat.getNumberInstance(Locale.US);
-        String formattedScore = formatter.format(score);
-        scoreLabel.setText("[Score: ¥" + formattedScore + "]");
+        String formattedScore = formatter.format(score/10);
+        scoreLabel.setText("[Score: " + formattedScore + "g ]");
     }
     
 }

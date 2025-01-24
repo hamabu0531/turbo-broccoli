@@ -11,7 +11,7 @@ public class ShieldLifePanel extends JPanel {
 
     public ShieldLifePanel() {
         try{
-            image = ImageIO.read(new File("shieldmini.png"));
+            image = ImageIO.read(new File("aray(1).png"));
         }catch(IOException e){
             e.printStackTrace();
         }

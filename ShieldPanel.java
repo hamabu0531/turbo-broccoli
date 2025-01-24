@@ -17,7 +17,7 @@ public class ShieldPanel extends JPanel{
         x = 0; y = 0;
         width = 100; height = 100;
         try{
-            image = ImageIO.read(new File("shield(1).png"));
+            image = ImageIO.read(new File("aray.png"));
         }catch(IOException e){
             e.printStackTrace();
         }

@@ -102,7 +102,7 @@ public class View extends JFrame {
         panel.setLayout(null);
         panel.setOpaque(false); // 背景透過
 
-        JLabel titleLabel = new JLabel("A Thief Rush", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Ateef Rush", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 70));
         titleLabel.setBounds(0, 200, 600, 100);
         panel.add(titleLabel);
