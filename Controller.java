@@ -24,7 +24,7 @@ public class Controller {
     private ArrayList<ItemPanel> items;
     private ArrayList<ShieldPanel> armors;
     private int deletedRock, deletedItem, deletedArmor, generateCounter, rockSpawnInterval, itemSpawnInterval, armorSpawnInterval, offsetY;
-    private Clip gameoverClip, gameBgmClip, titleBgmClip, armorEquipClip, armorBreakClip, itemCollectClip;
+    private Clip gameoverClip, gameBgmClip, titleBgmClip, armorEquipClip, armorBreakClip, itemCollectClip, startbuttonClip, screamingClip;
 
     public Controller(Model model, View view) {
         // 初期設定
@@ -37,9 +37,9 @@ public class Controller {
         deletedItem = 0;
         deletedArmor = 0;
         generateCounter = 50;
-        rockSpawnInterval = 100; // ゲームの難易度で数値変更可
-        itemSpawnInterval = 180; // ゲームの難易度で数値変更可
-        armorSpawnInterval = 1600; // ゲームの難易度で数値変更可
+        rockSpawnInterval = 30; // ゲームの難易度で数値変更可
+        itemSpawnInterval = 80; // ゲームの難易度で数値変更可
+        armorSpawnInterval = 500; // ゲームの難易度で数値変更可
         offsetY = -100;
 
         try {
@@ -66,6 +66,15 @@ public class Controller {
             AudioInputStream audioIn6 = AudioSystem.getAudioInputStream(Controller.class.getResource("ItemCollect.wav"));
             itemCollectClip = AudioSystem.getClip();
             itemCollectClip.open(audioIn6);
+
+            AudioInputStream audioIn7 = AudioSystem.getAudioInputStream(Controller.class.getResource("startbutton.wav"));
+            startbuttonClip = AudioSystem.getClip();
+            startbuttonClip.open(audioIn7);
+
+            AudioInputStream audioIn8 = AudioSystem.getAudioInputStream(Controller.class.getResource("endgame.wav"));
+            screamingClip = AudioSystem.getClip();
+            screamingClip.open(audioIn8);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,9 +119,13 @@ public class Controller {
                 titleBgmClip.stop();
                 
                 // ここにボタン効果音
-
+                if(startbuttonClip!=null){
+                    startbuttonClip.setFramePosition(0);
+                    startbuttonClip.start();
+                }
+                
                 // 1秒の遅延
-                Timer timer = new Timer(1000, new ActionListener() {
+                Timer timer = new Timer(1500, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (gameBgmClip != null) {
@@ -277,6 +290,10 @@ public class Controller {
                             if (gameoverClip != null) {
                                 gameoverClip.setFramePosition(0);
                                 gameoverClip.start();
+                            }
+                            if(screamingClip!=null){
+                                screamingClip.setFramePosition(0);
+                                screamingClip.start();
                             }
 
                             model.stopGame();
