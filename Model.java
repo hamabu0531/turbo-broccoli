@@ -42,7 +42,7 @@ public class Model {
     public Model() {
         score = 0; // 初期スコアは0
         playerPosX = 0;   //初期位置は0 (中央のレーン)
-        speed = 10;
+        speed = 20;
         isTitleScene = true;
         isGameStarted = false;
         isGameOver = false;
