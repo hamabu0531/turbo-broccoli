@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
+
 // Vはユーザーに情報を表示する(主にJ~~関係)
 // Vは、Mからデータを取得、Cの入力によって表示を変える
 
